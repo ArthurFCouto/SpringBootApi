@@ -29,15 +29,15 @@ public class appRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        //Neste método verificamos se temos roles cadastradas no banco de dados, se não tiver cadastramos duas
+        //Neste método verificamos se temos roles cadastradas no banco de dados, se não tiver cadastramos
         if (roleRepository.findAll().toArray().length == 0) {
             roleRepository.save(new Role("ROLE_ADMIN","Administrador"));
             roleRepository.save(new Role("ROLE_SELL","Vendedor"));
             roleRepository.save(new Role("ROLE_USER","Usuario"));
         }
-        //Neste método verificamos se temos usuários cadastradas no banco de dados, se não tiver cadastramos o principal
+        //Neste método verificamos se temos usuários cadastradas no banco de dados, se não tiver cadastramos o principal (ADMIN)
         if (usuarioRepository.findAll().toArray().length == 0) {
-            List<Role> roles = new ArrayList<>();
+            List<Role> roles = new ArrayList<>(); //É importante verificar e criar as ROLES primeiro por que o usuário depende de ter uma role cadastrada
             roles.add(roleRepository.findById("ROLE_ADMIN").get());
             usuarioRepository.save(new Usuario("admin@admin.com","ADMIN", LocalDate.now(), "12345678", roles));
         }

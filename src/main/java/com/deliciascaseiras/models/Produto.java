@@ -1,8 +1,6 @@
 package com.deliciascaseiras.models;
 
-import com.deliciascaseiras.modelJson.ProdutoJson;
 import com.fasterxml.jackson.annotation.JsonFormat;
-
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -17,7 +15,7 @@ public class Produto implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_produto;
 
     @Size(max = 25, message = "NOME de no máximo 30 caracteres")
@@ -61,20 +59,6 @@ public class Produto implements Serializable {
             inverseJoinColumns = @JoinColumn(
                     name = "usuario_id", referencedColumnName = "id_usuario")) //Aqui criamos uma tabela para o relacionamento entre o usuario e os produtos
     private Usuario usuario_produto;
-
-    public Produto() {
-    }
-
-    public Produto(ProdutoJson produtoJson, Usuario usuario, CategoriaProduto categoriaProduto) {
-        setNome_produto(produtoJson.getNome_produto());
-        setSabor_produto(produtoJson.getSabor_produto());
-        setPreco_produto(produtoJson.getPreco_produto());
-        setDisponivel_produto(produtoJson.isDisponivel_produto());
-        setDetalhe_produto(produtoJson.getDetalhe_produto());
-        setDataatualizacao_produto(LocalDate.now());
-        setUsuario_produto(usuario);
-        setCategoria_produto(categoriaProduto);
-    }
 
     public long getId_produto() {
         return id_produto;

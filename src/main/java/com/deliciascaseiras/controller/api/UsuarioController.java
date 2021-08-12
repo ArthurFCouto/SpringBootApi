@@ -1,6 +1,5 @@
 package com.deliciascaseiras.controller.api;
 
-import com.deliciascaseiras.modelJson.UsuarioJson;
 import com.deliciascaseiras.models.Usuario;
 import com.deliciascaseiras.models.admModel.Role;
 import com.deliciascaseiras.repository.RoleRepository;
@@ -34,11 +33,11 @@ public class UsuarioController {
 
     @PostMapping
     @ApiOperation(value="Salva um usuario")
-    public ResponseEntity<?> save(@RequestBody UsuarioJson usuarioJson) {
-        new AppUtil().validUsuarioJson(usuarioJson);
-        if (usuarioService.emailIsPresent(usuarioJson.getEmail_usuario()))
+    public ResponseEntity<?> save(@RequestBody Usuario usuario) {
+        System.out.println(usuario.getNome_usuario()+" - "+usuario.getAniversario_usuario());
+        new AppUtil().validUsuario(usuario);
+        if (usuarioService.emailIsPresent(usuario.getEmail_usuario()))
             comumUtilService.badRequestException("Email já cadastrado! Informe outro e-mail.");
-        Usuario usuario = new Usuario(usuarioJson);
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findById("ROLE_USER").get());
         usuario.setRoles(roles);

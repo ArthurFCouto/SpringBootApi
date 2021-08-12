@@ -9,8 +9,9 @@ import com.deliciascaseiras.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioServiceImpl implements UsuarioService {
@@ -29,14 +30,9 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> findByName(String nome) {
         List<Usuario> todosUsuarios = findAll();
-        List<Usuario> usuariosReturn = new ArrayList<>();
         List<String> tagUsuarios = new AppUtil().stringForList(nome);
-        for (Usuario usuario : todosUsuarios) {
-            for (String tag_aux : tagUsuarios) {
-                if (usuario.getNome_usuario().toUpperCase().contains(tag_aux.toUpperCase()))
-                    usuariosReturn.add(usuario);
-            }
-        }
+        Predicate<Usuario> filterUsuarioList = usuario -> new AppUtil().stringCompare(usuario.getNome_usuario(), tagUsuarios);
+        List<Usuario> usuariosReturn = todosUsuarios.stream().filter(filterUsuarioList).collect(Collectors.toList());
         return usuariosReturn;
     }
 

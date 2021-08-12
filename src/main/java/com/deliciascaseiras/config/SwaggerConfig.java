@@ -16,13 +16,14 @@ import java.util.ArrayList;
 import static springfox.documentation.builders.PathSelectors.*;
 import static springfox.documentation.builders.PathSelectors.regex;
 
+//Classe de documentação
+
 @EnableSwagger2 //Habilitando o swagger2 no projeto
 @Configuration
 public class SwaggerConfig {
-
     //Para acessar digite: localhost:8080/swagger-ui.html
 
-    //Estamos usando uma classe externa a nossa aplicação, por isso o Bean
+    //Como estamos usando uma classe externa a nossa aplicação, devemos anotar com Bean
     @Bean
     public Docket productApi() {
         return new Docket(DocumentationType.SWAGGER_2)

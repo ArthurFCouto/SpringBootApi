@@ -7,8 +7,9 @@ import com.deliciascaseiras.util.AppUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 @Service
 public class CategoriaProdutoImpl implements CategoriaProdutoService {
@@ -29,14 +30,9 @@ public class CategoriaProdutoImpl implements CategoriaProdutoService {
     @Override
     public List<CategoriaProduto> findByName(String nome) {
         List<CategoriaProduto> allCategorias = findAll();
-        List<CategoriaProduto> categoriasReturn = new ArrayList<>();
         List<String> tagNomes = new AppUtil().stringForList(nome);
-        for (CategoriaProduto categoriaProduto : allCategorias) { //Percorrendo a lista de todas as categorias
-            for (String tag_aux : tagNomes) { //Percorrendo a lista de nomes
-                if (categoriaProduto.getNome_categoria().toUpperCase().contains(tag_aux.toUpperCase())) //Verificando se a categoria contém o nome da lista
-                    categoriasReturn.add(categoriaProduto); //Adicionando a categoria a lista de retorno caso contenha o nome da lista de nomes
-            }
-        }
+        Predicate<CategoriaProduto> filterCategoriaList = categoriaProduto -> new AppUtil().stringCompare(categoriaProduto.getNome_categoria(), tagNomes);
+        List<CategoriaProduto> categoriasReturn = allCategorias.stream().filter(filterCategoriaList).collect(Collectors.toList());
         return categoriasReturn;
     }
 

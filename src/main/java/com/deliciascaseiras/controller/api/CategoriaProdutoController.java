@@ -29,7 +29,7 @@ public class CategoriaProdutoController {
     public ResponseEntity<?> findAll() {
         List<CategoriaProduto> categoriaProdutos = categoriaProdutoService.findAll();
         if(categoriaProdutos.toArray().length==0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
     }
 
@@ -38,7 +38,7 @@ public class CategoriaProdutoController {
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<CategoriaProduto> categoriaProdutos = categoriaProdutoService.findByName(nome);
         if(categoriaProdutos.toArray().length==0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
     }
 

@@ -56,7 +56,7 @@ public class CategoriaProdutoAdmin {
     @ApiOperation(value="Deleta a categoria com o ID informado")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         comumUtilService.verifyIfCategoriaExists(id);
-        comumUtilService.verifyIfBeingUsed(id);
+        comumUtilService.verifyIfBeingUsedCategory(id);
         categoriaProdutoService.delete(categoriaProdutoService.findById(id));
         return new ResponseEntity<>("Categoria deletada.", HttpStatus.OK);
     }

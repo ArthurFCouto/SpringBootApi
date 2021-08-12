@@ -15,10 +15,10 @@ import java.util.List;
 @Entity
 public class Role implements GrantedAuthority{
 
-    @Id
+    @Id //ID da Role
     private String nome_role;
 
-    @NotEmpty
+    @NotEmpty //Nome para identificação da Role
     private String apelido_role;
 
     @JsonIgnore
@@ -26,7 +26,7 @@ public class Role implements GrantedAuthority{
     private List<Usuario> usuarios;
 
     public Role() {
-
+        //Sempre precisamos de um contrutor vazio em uma Entity quando criamos um outro construtor.
     }
 
     public Role(String nome_role, String apelido_role) {

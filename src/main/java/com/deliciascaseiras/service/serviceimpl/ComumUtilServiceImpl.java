@@ -1,7 +1,7 @@
 package com.deliciascaseiras.service.serviceimpl;
 
 import com.deliciascaseiras.error.BadRequestException;
-import com.deliciascaseiras.error.RequestAcceptedException;
+import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
 import com.deliciascaseiras.error.UnauthorizedException;
 import com.deliciascaseiras.models.Produto;
@@ -51,8 +51,8 @@ public class ComumUtilServiceImpl implements ComumUtilService {
     }
 
     @Override
-    public void acceptedException(String message){
-        throw new RequestAcceptedException(message);
+    public void noContentException(String message){
+        throw new RequestNoContentException(message);
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ComumUtilServiceImpl implements ComumUtilService {
     }
 
     @Override
-    public void verifyIfBeingUsed(Long id) {
+    public void verifyIfBeingUsedCategory(Long id) {
         List<Produto> produtoList = produtoRepository.findAll();
         for(Produto produto : produtoList) {
             if(produto.getCategoria_produto().getId_categoria() == id)

@@ -1,7 +1,7 @@
 package com.deliciascaseiras.error.handler;
 
 import com.deliciascaseiras.error.BadRequestException;
-import com.deliciascaseiras.error.RequestAcceptedException;
+import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
 import com.deliciascaseiras.error.UnauthorizedException;
 import com.deliciascaseiras.error.details.ApiError;
@@ -24,11 +24,11 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NOT_FOUND);
     }
 
-    @ExceptionHandler(RequestAcceptedException.class)
+    @ExceptionHandler(RequestNoContentException.class)
     protected ResponseEntity<Object> handleRequestAcceptedException(
-            RequestAcceptedException raException) {
-        ApiError apiError = new ApiError(HttpStatus.ACCEPTED, "Request accepted", raException);
-        return new ResponseEntity<>(apiError, HttpStatus.ACCEPTED);
+            RequestNoContentException rncException) {
+        ApiError apiError = new ApiError(HttpStatus.NO_CONTENT, "No content", rncException);
+        return new ResponseEntity<>(apiError, HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(UnauthorizedException.class)

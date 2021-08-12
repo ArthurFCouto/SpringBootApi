@@ -50,7 +50,7 @@ public class AdminController {
     @ApiOperation(value = "Informa o sucesso no login")
     public ResponseEntity<?> loginSuccess() {
         //Pegando as informações do usuário logado com o UserDetails
-        return new ResponseEntity<>("Login efetuado: " + new AppUtil().userDetailUsername(), HttpStatus.ACCEPTED);
+        return new ResponseEntity<>("Login efetuado: " + new AppUtil().userDetailUsername(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/loginout", method = RequestMethod.GET)

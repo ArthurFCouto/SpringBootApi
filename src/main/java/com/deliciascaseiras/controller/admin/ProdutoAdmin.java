@@ -1,6 +1,5 @@
 package com.deliciascaseiras.controller.admin;
 
-import com.deliciascaseiras.modelJson.ProdutoJson;
 import com.deliciascaseiras.models.CategoriaProduto;
 import com.deliciascaseiras.models.Produto;
 import com.deliciascaseiras.models.Usuario;
@@ -39,15 +38,16 @@ public class ProdutoAdmin {
 
     @PostMapping
     @ApiOperation(value="Salva um produto")
-    public ResponseEntity<?> save(@RequestBody @Valid ProdutoJson produtoJson,
+    public ResponseEntity<?> save(@RequestBody @Valid Produto produto,
                                   @RequestParam String idCategoria) {
         comumUtilService.verifyIfCategoriaExists(Long.parseLong(idCategoria));
         Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
         if(usuarioService.verifyIsAdmin(usuarioLogado))
             comumUtilService.badRequestException("Não foi possível cadastrar o produto (Não autorizado para o perfil).");
-        new AppUtil().validProdutoJson(produtoJson);
+        new AppUtil().validProduto(produto);
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(Long.parseLong(idCategoria));
-        Produto produto = new Produto(produtoJson, usuarioLogado, categoriaProduto);
+        produto.setUsuario_produto(usuarioLogado);
+        produto.setCategoria_produto(categoriaProduto);
         produto.setData_produto(LocalDate.now());
         produtoService.save(produto);
         return new ResponseEntity<>("Produto salvo.", HttpStatus.OK);
@@ -55,7 +55,7 @@ public class ProdutoAdmin {
 
     @PutMapping
     @ApiOperation(value="Atualiza o produto com o id informado")
-    public ResponseEntity<?> update(@RequestBody @Valid ProdutoJson produtoJson,
+    public ResponseEntity<?> update(@RequestBody @Valid Produto produto,
                                     @RequestParam String idCategoria,
                                     @RequestParam String idProduto) {
         comumUtilService.verifyIfProdutoExists(Long.parseLong(idProduto));
@@ -63,9 +63,10 @@ public class ProdutoAdmin {
         Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
         if (produtoService.findById(Long.parseLong(idProduto)).getUsuario_produto() != usuarioLogado)
             comumUtilService.badRequestException("Não foi possível alterar o produto.");
-        new AppUtil().validProdutoJson(produtoJson);
+        new AppUtil().validProduto(produto);
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(Long.parseLong(idCategoria));
-        Produto produto = new Produto(produtoJson, usuarioLogado, categoriaProduto);
+        produto.setUsuario_produto(usuarioLogado);
+        produto.setCategoria_produto(categoriaProduto);
         produto.setId_produto(Long.parseLong(idProduto));
         produto.setData_produto(produtoService.findById(Long.parseLong(idProduto)).getData_produto());
         produtoService.save(produto);

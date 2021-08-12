@@ -4,6 +4,7 @@ import com.deliciascaseiras.models.Produto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;
+import com.deliciascaseiras.service.UsuarioService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class ProdutoController {
     CategoriaProdutoService categoriaProdutoService;
 
     @Autowired
+    UsuarioService usuarioService;
+
+    @Autowired
     ComumUtilService comumUtilService;
 
     @GetMapping(path = "buscarnome")
@@ -33,7 +37,7 @@ public class ProdutoController {
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Produto> produtos = produtoService.findByName(nome);
         if(produtos.toArray().length == 0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 
@@ -43,7 +47,17 @@ public class ProdutoController {
         comumUtilService.verifyIfCategoriaExists(Long.parseLong(idCategoria));
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(Long.parseLong(idCategoria)));
         if(produtos.toArray().length == 0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
+        return new ResponseEntity<>(produtos, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "buscarusuario")
+    @ApiOperation(value="Retorna uma lista que contem o usuário(id) informado")
+    public ResponseEntity<?> findByUsuario(@RequestParam String idUsuario) {
+        comumUtilService.verifyIfUsuarioExists(Long.parseLong(idUsuario));
+        List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(Long.parseLong(idUsuario)));
+        if(produtos.toArray().length == 0)
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 
@@ -58,7 +72,7 @@ public class ProdutoController {
     public ResponseEntity<?> findAll() {
         List<Produto> produtos = produtoService.findAll();
         if(produtos.toArray().length == 0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 

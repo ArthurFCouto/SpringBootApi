@@ -21,7 +21,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Extendendo 
     protected void configure(HttpSecurity http) throws Exception{
         http.csrf().disable().authorizeRequests()
                 .antMatchers("/admin/api/**").authenticated() //Todas as requisiçoes que precisam ser autenticadas
-                .antMatchers("/admin/api/roles").hasRole("ROLE_ADMIN") //Estamos informando que determinada URL só pode ser acessada por usuários ADMIN
+                .antMatchers("/admin/api/roles").hasRole("ADMIN") //Estamos informando que determinada URL só pode ser acessada por usuários ADMIN
                 .antMatchers(HttpMethod.DELETE, "/admin/api/usuario/**").hasRole("ADMIN")
                 .antMatchers(HttpMethod.POST,"/admin/api/categoriaproduto").hasRole("ADMIN")
                 .antMatchers(HttpMethod.PUT,"/admin/api/categoriaproduto/**").hasRole("ADMIN")

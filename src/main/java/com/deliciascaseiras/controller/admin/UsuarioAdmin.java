@@ -1,7 +1,6 @@
 package com.deliciascaseiras.controller.admin;
 
 import com.deliciascaseiras.error.ResourceNotFoundException;
-import com.deliciascaseiras.modelJson.UsuarioJson;
 import com.deliciascaseiras.models.Usuario;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.UsuarioService;
@@ -37,7 +36,7 @@ public class UsuarioAdmin {
         if(usuarios.contains(usuarioService.findByEmail("admin@admin.com"))) //Verificamos se o usuario admin@admin está na lista
             usuarios.remove(usuarioService.findByEmail("admin@admin.com")); //E removemos ele da lista se estiver
         if (usuarios.toArray().length == 0)
-            comumUtilService.acceptedException("Sem resultados para exibir.");
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
 
@@ -46,7 +45,7 @@ public class UsuarioAdmin {
     public ResponseEntity<?> findAll() {
         List<Usuario> usuarios = usuarioService.findAll();
         if (usuarios.toArray().length == 1) //Se tiver apenas um usuário cadastrado, ele será o admin@admin porque não é possível excluí-lo
-            comumUtilService.acceptedException("Sem resultados para exibir."); //Desse modo não exibimos
+            comumUtilService.noContentException("Sem resultados para exibir."); //Desse modo não exibimos
         usuarios.remove(usuarioService.findByEmail("admin@admin.com")); //Se tiver mais usuários cadastrados, removemos o admin@admin
         return new ResponseEntity<>(usuarios, HttpStatus.OK);
     }
@@ -62,18 +61,18 @@ public class UsuarioAdmin {
 
     @PutMapping(value = "{id}")
     @ApiOperation(value="Atualiza o usuário com o ID informado")
-    public ResponseEntity<?> update(@RequestBody @Valid UsuarioJson usuarioJson,
+    public ResponseEntity<?> update(@RequestBody @Valid Usuario usuario,
                                     @PathVariable("id") long id) {
         comumUtilService.verifyIfUsuarioExists(id);
-        new AppUtil().validUsuarioJson(usuarioJson);
-        Usuario usuario = usuarioService.findById(id);
-        usuario.setNome_usuario(usuarioJson.getNome_usuario());
-        usuario.setEmail_usuario(usuarioJson.getEmail_usuario());
-        usuario.setAniversario_usuario(usuarioJson.getAniversario_usuario());
-        usuario.setTelefone_usuario(usuarioJson.getTelefone_usuario());
-        usuario.setSenha_usuario(new BCryptPasswordEncoder().encode(usuarioJson.getSenha_usuario()));
-        usuario.setDataatualizacao_usuario(LocalDate.now());
-        usuarioService.save(usuario);
+        new AppUtil().validUsuario(usuario);
+        Usuario usuarioAux = usuarioService.findById(id);
+        usuarioAux.setNome_usuario(usuario.getNome_usuario());
+        usuarioAux.setEmail_usuario(usuario.getEmail_usuario());
+        usuarioAux.setAniversario_usuario(usuario.getAniversario_usuario());
+        usuarioAux.setTelefone_usuario(usuario.getTelefone_usuario());
+        usuarioAux.setSenha_usuario(new BCryptPasswordEncoder().encode(usuario.getSenha_usuario()));
+        usuarioAux.setDataatualizacao_usuario(LocalDate.now());
+        usuarioService.save(usuarioAux);
         return new ResponseEntity<>("Usuário atualizado!",HttpStatus.OK);
     }
 

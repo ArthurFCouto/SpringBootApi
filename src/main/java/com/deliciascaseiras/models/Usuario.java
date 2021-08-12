@@ -1,6 +1,5 @@
 package com.deliciascaseiras.models;
 
-import com.deliciascaseiras.modelJson.UsuarioJson;
 import com.deliciascaseiras.models.admModel.Role;
 import com.deliciascaseiras.models.subModel.Endereco;
 import com.fasterxml.jackson.annotation.JsonFormat;
@@ -67,7 +66,6 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuario_endereco")
     private List<Endereco> enderecoList;
 
-    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "usuario_roles",
@@ -78,17 +76,6 @@ public class Usuario implements Serializable, UserDetails {
     private List<Role> roles;
 
     public Usuario() {
-
-    }
-
-    public Usuario(UsuarioJson usuarioJson) {
-        setEmail_usuario(usuarioJson.getEmail_usuario());
-        setNome_usuario(usuarioJson.getNome_usuario());
-        setAniversario_usuario(usuarioJson.getAniversario_usuario());
-        setTelefone_usuario(usuarioJson.getTelefone_usuario());
-        setSenha_usuario(new BCryptPasswordEncoder().encode(usuarioJson.getSenha_usuario()));
-        setData_usuario(LocalDate.now());
-        setDataatualizacao_usuario(LocalDate.now());
     }
 
     public Usuario(String email_usuario, String nome_usuario, LocalDate data_usuario, String senha_usuario, List<Role> roles) {

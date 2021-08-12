@@ -128,7 +128,6 @@ public class Usuario implements Serializable, UserDetails {
         this.telefone_usuario = telefone_usuario;
     }
 
-    @JsonIgnore
     public String getSenha_usuario() {
         return senha_usuario;
     }

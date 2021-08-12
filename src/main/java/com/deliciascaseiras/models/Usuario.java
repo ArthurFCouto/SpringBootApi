@@ -48,7 +48,6 @@ public class Usuario implements Serializable, UserDetails {
     @NotNull(message = "TELEFONE - Não pode ser vazio")
     private long telefone_usuario;
 
-    @JsonIgnore
     @Size(min = 8, message = "SENHA - Mínimo 8 caracteres")
     @NotBlank(message = "SENHA - Não pode ser vazio")
     private String senha_usuario;
@@ -129,6 +128,7 @@ public class Usuario implements Serializable, UserDetails {
         this.telefone_usuario = telefone_usuario;
     }
 
+    @JsonIgnore
     public String getSenha_usuario() {
         return senha_usuario;
     }

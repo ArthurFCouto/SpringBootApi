@@ -1,4 +1,4 @@
-package com.deliciascaseiras.models;
+package com.deliciascaseiras.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -19,7 +19,7 @@ public class CategoriaProduto implements Serializable {
     private long id_categoria;
 
     @Column(unique = true) //Valor único para a coluna, como se fosse um ID
-    @Size(max = 25) //Tamanho máximo, 25 caracteres
+    @Size(max = 25, message = "NOME - No máximo 25 caracteres") //Tamanho máximo, 25 caracteres
     @NotBlank //Não pode ser vazio ou nulo
     private String nome_categoria;
 

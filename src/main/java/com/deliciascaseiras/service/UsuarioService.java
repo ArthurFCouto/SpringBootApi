@@ -1,6 +1,6 @@
 package com.deliciascaseiras.service;
 
-import com.deliciascaseiras.models.Usuario;
+import com.deliciascaseiras.entity.Usuario;
 
 import java.util.List;
 

@@ -1,6 +1,6 @@
 package com.deliciascaseiras.controller.api;
 
-import com.deliciascaseiras.models.Produto;
+import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;

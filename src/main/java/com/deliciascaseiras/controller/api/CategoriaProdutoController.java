@@ -1,6 +1,6 @@
 package com.deliciascaseiras.controller.api;
 
-import com.deliciascaseiras.models.CategoriaProduto;
+import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import io.swagger.annotations.Api;

@@ -4,7 +4,7 @@ import com.deliciascaseiras.error.BadRequestException;
 import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
 import com.deliciascaseiras.error.UnauthorizedException;
-import com.deliciascaseiras.models.Produto;
+import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.repository.CategoriaProdutoRepository;
 import com.deliciascaseiras.repository.ProdutoRepository;
 import com.deliciascaseiras.repository.UsuarioRepository;

@@ -1,6 +1,6 @@
 package com.deliciascaseiras.controller.admin;
 
-import com.deliciascaseiras.models.CategoriaProduto;
+import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.UsuarioService;

@@ -1,4 +1,4 @@
-package com.deliciascaseiras.models;
+package com.deliciascaseiras.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.*;
@@ -18,15 +18,15 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_produto;
 
-    @Size(max = 25, message = "NOME de no máximo 30 caracteres")
-    @NotBlank(message = "NOME não pode ser vazio")
+    @Size(max = 25, message = "NOME - No máximo 25 caracteres")
+    @NotBlank(message = "NOME - Não pode ser vazio")
     private String nome_produto;
 
-    @Size(max = 25, message = "SABOR de no máximo 35 caracteres")
-    @NotBlank(message = "SABOR não pode ser vazio")
+    @Size(max = 25, message = "SABOR - No máximo 25 caracteres")
+    @NotBlank(message = "SABOR - Não pode ser vazio")
     private String sabor_produto;
 
-    @NotNull(message = "PREÇO não pode ser vazio")
+    @NotNull(message = "PREÇO - Não pode ser vazio")
     private float preco_produto;
 
     @ManyToOne //Relação muitos para um com categoria
@@ -38,7 +38,7 @@ public class Produto implements Serializable {
                     name = "categoria_id", referencedColumnName = "id_categoria"))
     private CategoriaProduto categoria_produto;
 
-    @NotNull(message = "DISPONIBILIDADE não pode ser vazio")
+    @NotNull(message = "DISPONIBILIDADE - Não pode ser vazio")
     private boolean disponivel_produto;
 
     @Lob

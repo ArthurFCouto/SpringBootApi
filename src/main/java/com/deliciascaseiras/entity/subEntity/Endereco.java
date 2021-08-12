@@ -1,6 +1,6 @@
-package com.deliciascaseiras.models.subModel;
+package com.deliciascaseiras.entity.subEntity;
 
-import com.deliciascaseiras.models.Usuario;
+import com.deliciascaseiras.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
@@ -14,7 +14,6 @@ import java.io.Serializable;
 public class Endereco implements Serializable {
     private static final long serialVersionUID = 1L;
 
-    @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_endereco;
@@ -34,9 +33,11 @@ public class Endereco implements Serializable {
     @NotEmpty(message = "CEP - Não pode ser vazio")
     private String cep_endereco;
 
+    @Size(max = 35, message = "CIDADE - Máximo 35 caracteres")
     @NotBlank(message = "CIDADE - Não pode ser vazio")
     private String cidade_endereco;
 
+    @Size(max = 2, message = "UF - Informe abreviado (XX)")
     @NotBlank(message = "UF - Não pode ser vazio")
     private String uf_endereco;
 

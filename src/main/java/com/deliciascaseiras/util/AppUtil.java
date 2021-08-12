@@ -1,9 +1,9 @@
 package com.deliciascaseiras.util;
 
 import com.deliciascaseiras.error.BadRequestException;
-import com.deliciascaseiras.models.CategoriaProduto;
-import com.deliciascaseiras.models.Produto;
-import com.deliciascaseiras.models.Usuario;
+import com.deliciascaseiras.entity.CategoriaProduto;
+import com.deliciascaseiras.entity.Produto;
+import com.deliciascaseiras.entity.Usuario;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 

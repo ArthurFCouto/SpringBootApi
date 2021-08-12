@@ -1,6 +1,6 @@
 package com.deliciascaseiras.service.serviceimpl;
 
-import com.deliciascaseiras.models.CategoriaProduto;
+import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.repository.CategoriaProdutoRepository;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.util.AppUtil;

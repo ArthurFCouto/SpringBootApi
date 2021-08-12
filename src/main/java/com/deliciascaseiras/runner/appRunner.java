@@ -1,7 +1,7 @@
 package com.deliciascaseiras.runner;
 
-import com.deliciascaseiras.models.Usuario;
-import com.deliciascaseiras.models.admModel.Role;
+import com.deliciascaseiras.entity.Usuario;
+import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.repository.RoleRepository;
 import com.deliciascaseiras.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

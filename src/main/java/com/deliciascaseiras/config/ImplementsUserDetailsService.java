@@ -1,6 +1,6 @@
 package com.deliciascaseiras.config;
 
-import com.deliciascaseiras.models.Usuario;
+import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;

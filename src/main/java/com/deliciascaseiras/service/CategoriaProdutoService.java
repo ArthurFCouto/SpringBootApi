@@ -1,6 +1,6 @@
 package com.deliciascaseiras.service;
 
-import com.deliciascaseiras.models.CategoriaProduto;
+import com.deliciascaseiras.entity.CategoriaProduto;
 
 import java.util.List;
 

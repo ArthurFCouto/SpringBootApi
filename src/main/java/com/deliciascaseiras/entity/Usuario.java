@@ -1,7 +1,7 @@
-package com.deliciascaseiras.models;
+package com.deliciascaseiras.entity;
 
-import com.deliciascaseiras.models.admModel.Role;
-import com.deliciascaseiras.models.subModel.Endereco;
+import com.deliciascaseiras.entity.admEntity.Role;
+import com.deliciascaseiras.entity.subEntity.Endereco;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;

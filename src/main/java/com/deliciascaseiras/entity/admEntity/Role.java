@@ -1,6 +1,6 @@
-package com.deliciascaseiras.models.admModel;
+package com.deliciascaseiras.entity.admEntity;
 
-import com.deliciascaseiras.models.Usuario;
+import com.deliciascaseiras.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 

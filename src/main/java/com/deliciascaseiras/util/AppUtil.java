@@ -18,13 +18,32 @@ public class AppUtil {
     public List<String> stringForList(String name) {
         List<String> stringList = new ArrayList<>(); //Criando a lista que será retornada
         String nome = name.replaceAll("\\s|-|;", "");
-        //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços e ponto e virgula por vazio ("")
+        //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços, ponto e virgula por vazio ("")
         //A barra funciona neste caso como um e/ou
-        //Verificando se a String não está vazia
-        if (nome.length() >= 1) {
-            /*String aux = ""; //Criando uma variável auxiliar que irá formar as palavras individuais
+        if (nome.length() >= 1) { //Verificando se a String não está vazia
+            String[] stringArray = name.split("\\s|-|;"); //Criando um array/vetor do tipo string
+            //O método split, separa uma string em um Array, dividindo pelos regex passados como parametros, no caso, espaço, traço e ponto e virgula
+            //A barra funciona neste caso como um e/ou
+            for (String stringAux : stringArray) { //Percorrendo a array formada
+                if(stringAux.length() >= 2)
+                    stringList.add(stringAux); //Adicionando a lista de retorno apenas as palavras da lista que sejam maiores que dois caracteres
+            }
+        } else {
+            stringList.add(nome); //Se a frase estiver vazia a lista é retornada com apenas a frase vazia
+        }
+        return stringList;
+    }
+
+    /* //Método utilizado anteriormente
+    public List<String> stringForList(String name) {
+        List<String> stringList = new ArrayList<>(); //Criando a lista que será retornada
+        String nome = name.replaceAll("\\s|-|;", "");
+        //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços, ponto e virgula por vazio ("")
+        //A barra funciona neste caso como um e/ou
+        if (nome.length() >= 1) { //Verificando se a String não está vazia
+            String aux = ""; //Criando uma variável auxiliar que irá formar as palavras individualmente
             for (int i = 0; i < name.length(); i++) { //Percorrendo toda a String nome (frase)
-                if (name.substring(i, i + 1).equals(" ")) { //Se houver espaços vazios, criaremos uma palavra e vamos adicionar a lista de nomes
+                if (name.substring(i, i + 1).equals(" ")) { //Se na posição atual houver espaço vazio, criaremos uma palavra e vamos adicionar a lista de nomes
                     if (aux.length() > 2) { //Adicionando apenas palavras com mais de duas letras
                         stringList.add(aux);
                     }
@@ -34,43 +53,39 @@ public class AppUtil {
                     if (name.length()-i==1) //Verificando se chegamos na última posição da frase, se sim, adicionamos a última palavra formada
                         stringList.add(aux);
                 }
-            }*/
-            //O método split, separa uma string em lista, dividindo pelos regex passados como parametros, no caso, espaço, traço e ponto e virgula
-            String[] aux = name.split("\\s|-|;");
-            for (String stringAux : aux) {
-                //Adicionando a lista de retorno apenas as palavras da lista que sejam maiores que dois caracteres
-                if(stringAux.length() >= 2)
-                    stringList.add(stringAux);
             }
+
         } else {
             stringList.add(nome); //Se a frase estiver vazia a lista é retornada com apenas a frase vazia
         }
         return stringList;
-    }
+    } */
 
     //Método booleano para verificar se a string contém algum valor da lista
-    public boolean stringCompare(String nameToCompare, List<String> listToGo) {
-        boolean boReturn = false;
-        for (String aux : listToGo) {
+    public boolean stringCompareList(String nameToCompare, List<String> listToCompare) {
+        for (String aux : listToCompare) {
             if (nameToCompare.toUpperCase().contains(aux.toUpperCase()))
-                boReturn = true;
+                return true;
         }
-        return boReturn;
+        return false;
     }
 
-    //Retorna o Username do usuário logado (ou seja o email)
+    //Retorna o Username do usuário logado
     public String userDetailUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        String username;
         if (principal instanceof UserDetails) {
-            username = ((UserDetails) principal).getUsername();
+            return ((UserDetails) principal).getUsername();
         } else {
-            username = principal.toString();
+            return principal.toString();
         }
-        return username;
     }
 
-    //Validar categoria
+    //Retorna a URL base da aplicação
+    public String baseURL() {
+        return "https://deliciascaseiras.herokuapp.com/";
+    }
+
+    //Método para efetuar a validação manual da categoria
     public void validCategoria(CategoriaProduto categoriaProduto) {
         List<ListError> error = new ArrayList<>(); //Cria uma lista para retornar os erros
         Conditions conditions = new Conditions(); //Cria um acesso a classe que contém os if's
@@ -89,7 +104,7 @@ public class AppUtil {
         }
     }
 
-    //Validar produto
+    //Método para efetuar a validação manual do produto
     public void validProduto(Produto produto) {
         List<ListError> error = new ArrayList<>();
         Conditions conditions = new Conditions();
@@ -113,6 +128,7 @@ public class AppUtil {
         }
     }
 
+    //Método para efetuar a validação manual do usuário
     public void validUsuario(Usuario usuario) {
         List<ListError> error = new ArrayList<>();
         Conditions conditions = new Conditions();
@@ -130,12 +146,10 @@ public class AppUtil {
             error.add(conditions.stringIsEmpty("email_usuario", email_usuario));
         if(conditions.lengthMaxException("email_usuario", email_usuario, 60) != null)
             error.add(conditions.lengthMaxException("email_usuario", email_usuario, 60));
-        if(conditions.localDateIsEmpty("aniversario_usuario", aniversario_usuario) != null)
-            error.add(conditions.localDateIsEmpty("aniversario_usuario", aniversario_usuario));
-        if(conditions.locaDatePas("aniversario_usuario", aniversario_usuario) != null)
-            error.add(conditions.locaDatePas("aniversario_usuario", aniversario_usuario));
+        if(conditions.localDateValid("aniversario_usuario", aniversario_usuario) != null)
+            error.add(conditions.localDateValid("aniversario_usuario", aniversario_usuario));
         if(String.valueOf(telefone_usuario).length() != 11)
-            error.add(new ListError("telefone_usuario", "Telefone no formato xx xxxxx xxxx"));
+            error.add(new ListError("telefone_usuario", "Deve ser no formato xx xxxxx xxxx, apenas números"));
         if(conditions.stringIsEmpty("senha_usuario", senha_usuario) != null)
             error.add(conditions.stringIsEmpty("senha_usuario", senha_usuario));
         if(senha_usuario != null) {
@@ -144,7 +158,6 @@ public class AppUtil {
         }
 
         List<String> list = new ArrayList<>();
-
         if(!error.isEmpty()) {
             for (ListError listError : error) {
                 list.add(listError.getTitle()+" "+listError.getError());
@@ -154,6 +167,7 @@ public class AppUtil {
         }
     }
 
+    //Classe para testar as condições
     class Conditions {
 
         public ListError stringIsEmpty(String title, String value) {
@@ -168,13 +182,9 @@ public class AppUtil {
             return null;
         }
 
-        public ListError localDateIsEmpty(String title, LocalDate value) {
+        public ListError localDateValid(String title, LocalDate value) {
             if(value == null)
-                return new ListError(title, "Não pode ser igual a 0");
-            return null;
-        }
-
-        public ListError locaDatePas(String title, LocalDate value) {
+                return new ListError(title, "Não pode ser vazio");
             if(value.isAfter(LocalDate.now()))
                 return new ListError(title, "Deve ser no passado");
             return null;

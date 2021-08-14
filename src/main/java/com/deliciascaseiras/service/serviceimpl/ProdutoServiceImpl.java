@@ -29,7 +29,7 @@ public class ProdutoServiceImpl implements ProdutoService {
         List<Produto> todosProdutos = findAll();
         List<String> tagProdutos = new AppUtil().stringForList(nome);
         //Com o predicate criamos a condição para o filtro da lista
-        Predicate<Produto> filterProdutoList = produto -> new AppUtil().stringCompare(produto.getNome_produto(), tagProdutos);
+        Predicate<Produto> filterProdutoList = produto -> new AppUtil().stringCompareList(produto.getNome_produto(), tagProdutos);
         List<Produto> produtosReturn = todosProdutos.stream().filter(filterProdutoList).collect(Collectors.toList());
         return produtosReturn;
     }

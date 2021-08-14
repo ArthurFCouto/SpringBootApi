@@ -35,9 +35,10 @@ public class appRunner implements ApplicationRunner {
             roleRepository.save(new Role("ROLE_SELL","Vendedor"));
             roleRepository.save(new Role("ROLE_USER","Usuario"));
         }
+
         //Neste método verificamos se temos usuários cadastradas no banco de dados, se não tiver cadastramos o principal (ADMIN)
         if (usuarioRepository.findAll().toArray().length == 0) {
-            List<Role> roles = new ArrayList<>(); //É importante verificar e criar as ROLES primeiro por que o usuário depende de ter uma role cadastrada
+            List<Role> roles = new ArrayList<>(); //É importante verificar e criar as ROLES primeiro pois, o usuário depende de ter uma role cadastrada
             roles.add(roleRepository.findById("ROLE_ADMIN").get());
             usuarioRepository.save(new Usuario("admin@admin.com","ADMIN", LocalDate.now(), "12345678", roles));
         }

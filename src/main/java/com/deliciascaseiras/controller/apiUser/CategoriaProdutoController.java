@@ -1,4 +1,4 @@
-package com.deliciascaseiras.controller.api;
+package com.deliciascaseiras.controller.apiUser;
 
 import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin("*")
-@RequestMapping("api/categoriaproduto")
+@RequestMapping("api/user/categoriaproduto")
 @RestController
 @Api(value="API REST - Informações de categorias")
 public class CategoriaProdutoController {
@@ -33,19 +33,19 @@ public class CategoriaProdutoController {
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "buscarnome")
+    @GetMapping(path = "{id}")
+    @ApiOperation(value="Retorna uma categoria unica com o ID informado")
+    public ResponseEntity<?> findById(@PathVariable("id") long id) {
+        comumUtilService.verifyIfCategoriaExists(id);
+        return new ResponseEntity<>(categoriaProdutoService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "buscar")
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<CategoriaProduto> categoriaProdutos = categoriaProdutoService.findByName(nome);
         if(categoriaProdutos.toArray().length==0)
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "{id}")
-    @ApiOperation(value="Retorna uma categoria unica com o ID informado")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
-        comumUtilService.verifyIfCategoriaExists(id);
-        return new ResponseEntity<>(categoriaProdutoService.findById(id), HttpStatus.OK);
     }
 }

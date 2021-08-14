@@ -1,7 +1,8 @@
 package com.deliciascaseiras.entity;
 
 import com.deliciascaseiras.entity.admEntity.Role;
-import com.deliciascaseiras.entity.subEntity.Endereco;
+import com.deliciascaseiras.entity.auxEntity.Endereco;
+import com.deliciascaseiras.util.AppUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -23,9 +24,6 @@ import java.util.List;
 public class Usuario implements Serializable, UserDetails {
     //Implementando a Serializable para que o Spring gere os ID do usuário automáticamente
     //implementando o UserDetails para que possamos fazer login com os usuarios cadastrados
-
-
-    private static final String baseUrl = "https://deliciascaseiras.herokuapp.com/";
 
     private static final long serialVersionUID = 1L;
 
@@ -100,7 +98,7 @@ public class Usuario implements Serializable, UserDetails {
                 ", nome_usuario: " + nome_usuario +
                 ", aniversario_usuario: " + aniversario_usuario +
                 ", telefone_usuario: " + telefone_usuario +
-                ", produtoList: "+baseUrl+"usuario/"+id_usuario +
+                ", produtoList: "+new AppUtil().baseURL()+"api/user/produto/usuario/"+id_usuario +
                 ", data_usuario: " + data_usuario +
                 ", dataatualizacao_usuario: " + dataatualizacao_usuario +
                 ", roles: " + roles +
@@ -231,6 +229,7 @@ public class Usuario implements Serializable, UserDetails {
         return true;
     } //Informando que a conta está ativa
 
+    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { //Trabalhar a questão das Roles
         return (Collection<? extends GrantedAuthority>) this.roles;

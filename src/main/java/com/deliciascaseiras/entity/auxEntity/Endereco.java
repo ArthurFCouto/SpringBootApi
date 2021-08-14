@@ -1,4 +1,4 @@
-package com.deliciascaseiras.entity.subEntity;
+package com.deliciascaseiras.entity.auxEntity;
 
 import com.deliciascaseiras.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;

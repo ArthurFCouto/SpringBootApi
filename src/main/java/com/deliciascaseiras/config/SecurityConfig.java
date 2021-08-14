@@ -2,7 +2,6 @@ package com.deliciascaseiras.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -19,13 +18,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Extendendo 
 
     @Override
     protected void configure(HttpSecurity http) throws Exception{
-        //http.csrf().disable().authorizeRequests()
-        http.authorizeRequests()
-                .antMatchers("/admin/api/roles", "/admin/api/quantidadeproduto").hasRole("ADMIN") //Estamos informando que determinada URL só pode ser acessada por usuários ADMIN
-                .antMatchers(HttpMethod.DELETE, "/admin/api/usuario/**", "/admin/api/categoriaproduto/**").hasRole("ADMIN")
-                .antMatchers(HttpMethod.POST,"/admin/api/categoriaproduto").hasRole("ADMIN")
-                .antMatchers(HttpMethod.PUT,"/admin/api/categoriaproduto/**").hasRole("ADMIN")
-                .antMatchers("/admin/api/**").authenticated() //Todas as requisiçoes que precisam ser autenticadas
+        //http.authorizeRequests()
+        http.csrf().disable().authorizeRequests()//Habilitanto os methodos além do GET
+                .antMatchers("/api/admin/**").hasRole("ADMIN") //Estamos informando que determinada URL só pode ser acessada por usuários ADMIN
+                .antMatchers("/api/auth/**").authenticated() //Todas as requisiçoes que precisam ser autenticadas
                 .anyRequest().permitAll() //Caminhos que não precisam de autenticação (o restante exceto o listado acima)
                 /*.and()
                 .formLogin().permitAll()//Permitindo o acesso ao FormLogin por todos
@@ -41,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter { //Extendendo 
                 .and()
                 .httpBasic()
                 .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Método para informar que não quer o estado da aplicação, não armazena a authenticação em cookie, em cada requisição é preciso passar a autenticação
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); //Método para informar que não quer o estado da aplicação, não armazena a authenticação em cookie, em cada requisição é preciso passar a autenticação, cada requisição é uma nova seção.
     }
 
     @Override

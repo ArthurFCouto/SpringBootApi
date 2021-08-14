@@ -31,7 +31,7 @@ public class CategoriaProdutoImpl implements CategoriaProdutoService {
     public List<CategoriaProduto> findByName(String nome) {
         List<CategoriaProduto> allCategorias = findAll();
         List<String> tagNomes = new AppUtil().stringForList(nome);
-        Predicate<CategoriaProduto> filterCategoriaList = categoriaProduto -> new AppUtil().stringCompare(categoriaProduto.getNome_categoria(), tagNomes);
+        Predicate<CategoriaProduto> filterCategoriaList = categoriaProduto -> new AppUtil().stringCompareList(categoriaProduto.getNome_categoria(), tagNomes);
         List<CategoriaProduto> categoriasReturn = allCategorias.stream().filter(filterCategoriaList).collect(Collectors.toList());
         return categoriasReturn;
     }

@@ -1,27 +1,16 @@
-package com.deliciascaseiras.controller.admin;
+package com.deliciascaseiras.controller.apiAdmin;
 
-import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.repository.RoleRepository;
 import com.deliciascaseiras.service.ComumUtilService;
-import com.deliciascaseiras.service.UsuarioService;
 import com.deliciascaseiras.service.ProdutoService;
+import com.deliciascaseiras.service.UsuarioService;
 import com.deliciascaseiras.util.AppUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -77,29 +66,46 @@ public class AdminController {
     }*/
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
-    @ApiOperation(value = "Informa a falta de permissão para acesso a página")
+    @ApiOperation(value = "Retorna uma mensagem personalizada para a falta de autorização de acessoa  página.")
     public ResponseEntity<?> notAuthorized() {
         comumUtilService.forbiddenException();
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
-    @RequestMapping(value = "/admin/api/roles", method = RequestMethod.GET)
-    @ApiOperation(value = "Retorna a lista de autorizações(roles) cadastradas")
+    @RequestMapping(value = "/api/admin/roles", method = RequestMethod.GET)
+    @ApiOperation(value = "Retorna a lista de autorizações (roles) cadastradas")
     public ResponseEntity<?> returnRoles() {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/api/quantidadeproduto", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/admin/quantidadeproduto", method = RequestMethod.GET)
     @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
-    public ResponseEntity<?> length() {
+    public ResponseEntity<?> lengthProducts() {
         return new ResponseEntity<>(produtoService.findAll().toArray().length, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/admin/api/usuariologado", method = RequestMethod.GET)
-    @ApiOperation(value="Retorna o usuário logado e sua autorização")
-    public ResponseEntity<?> userLogin() {
-        String login = new AppUtil().userDetailUsername();
-        List<Role> role = usuarioService.findByEmail(login).getRoles();
-        return new ResponseEntity<>(login +" - "+role, HttpStatus.OK);
+    @RequestMapping(value = "/api/admin/quantidadeusuarios", method = RequestMethod.GET)
+    @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
+    public ResponseEntity<?> lengthUsers() {
+        return new ResponseEntity<>(usuarioService.findAll().toArray().length, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/admin/usuario/delete/{id}", method = RequestMethod.DELETE)
+    @ApiOperation(value="Deleta o usuário com o ID informado")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        comumUtilService.verifyIfUsuarioExists(id);
+        if (usuarioService.findById(id).getEmail_usuario().equals(new AppUtil().userDetailUsername()))
+            comumUtilService.badRequestException("Faça esta solicitação a outro ADMIN.");
+        if (usuarioService.findById(id).getEmail_usuario().equals("admin@admin.com"))
+            comumUtilService.badRequestException("Não é possível excluir este usuário.");
+        if (usuarioService.produtoIsPresent(id))
+            comumUtilService.badRequestException("Usuário com produtos cadastrados.");
+        try {
+            usuarioService.delete(usuarioService.findById(id));
+        } catch (Exception exception) {
+            comumUtilService.badRequestException("Erro ao excluir usuário.\nDetails: "+exception);
+        }
+
+        return new ResponseEntity<>("Usuário deletado!",HttpStatus.OK);
     }
 }

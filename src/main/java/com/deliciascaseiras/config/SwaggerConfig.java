@@ -13,11 +13,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 import java.util.ArrayList;
 
-import static springfox.documentation.builders.PathSelectors.*;
-import static springfox.documentation.builders.PathSelectors.regex;
-
 //Classe de documentação
-
 @EnableSwagger2 //Habilitando o swagger2 no projeto
 @Configuration
 public class SwaggerConfig {
@@ -30,7 +26,7 @@ public class SwaggerConfig {
                 .select()
                 .apis(RequestHandlerSelectors.basePackage("com.deliciascaseiras.controller")) //Mapeando os pacotes com URL para documentação
                 //.apis(RequestHandlerSelectors.any()) //Mapeando todos os pacotes para documentação
-                //.paths(regex("/api/.*")) //Mapeamento quais URL serão documentadas
+                //.paths(regex("/apiUser/.*")) //Mapeamento quais URL serão documentadas
                 .paths(PathSelectors.any()) //Mapeamento quais URL serão documentadas, neste caso, todas
                 .build()
                 .apiInfo(metaInfo()); //Descrição personalizada da API

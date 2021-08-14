@@ -1,4 +1,4 @@
-package com.deliciascaseiras.controller.api;
+package com.deliciascaseiras.controller.apiUser;
 
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.entity.admEntity.Role;
@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("api/usuario")
+@RequestMapping("api/user/usuario")
 @RestController
 @Api(value="API REST - Informações de usuários")
 public class UsuarioController {
@@ -36,7 +36,6 @@ public class UsuarioController {
     @PostMapping
     @ApiOperation(value="Salva um usuario")
     public ResponseEntity<?> save(@RequestBody Usuario usuario) {
-        System.out.println(usuario.getNome_usuario()+" - "+usuario.getAniversario_usuario());
         new AppUtil().validUsuario(usuario);
         if (usuarioService.emailIsPresent(usuario.getEmail_usuario()))
             comumUtilService.badRequestException("Email já cadastrado! Informe outro e-mail.");
@@ -48,6 +47,6 @@ public class UsuarioController {
         usuario.setData_usuario(LocalDate.now());
         usuario.setDataatualizacao_usuario(LocalDate.now());
         usuarioService.save(usuario);
-        return new ResponseEntity<>("Usuário salvo!",HttpStatus.OK);
+        return new ResponseEntity<>("Usuário salvo.",HttpStatus.OK);
     }
 }

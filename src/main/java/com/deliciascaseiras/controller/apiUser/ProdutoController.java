@@ -1,4 +1,4 @@
-package com.deliciascaseiras.controller.api;
+package com.deliciascaseiras.controller.apiUser;
 
 import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("api/produto")
+@RequestMapping("api/user/produto")
 @RestController
 @Api(value="API REST - Informações de produtos")
 public class ProdutoController {
@@ -32,35 +32,6 @@ public class ProdutoController {
     @Autowired
     ComumUtilService comumUtilService;
 
-    @GetMapping(path = "buscar")
-    @ApiOperation(value="Retorna uma lista que contem o nome informado")
-    public ResponseEntity<?> findByName(@RequestParam String nome) {
-        List<Produto> produtos = produtoService.findByName(nome);
-        if(produtos.toArray().length == 0)
-            comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "categoria/{idCategoria}")
-    @ApiOperation(value="Retorna uma lista que contem a categoria(id) informada")
-    public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") String idCategoria) {
-        comumUtilService.verifyIfCategoriaExists(Long.parseLong(idCategoria));
-        List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(Long.parseLong(idCategoria)));
-        if(produtos.toArray().length == 0)
-            comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "usuario/{idUsuario}")
-    @ApiOperation(value="Retorna uma lista que contem o usuário(id) informado")
-    public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") String idUsuario) {
-        comumUtilService.verifyIfUsuarioExists(Long.parseLong(idUsuario));
-        List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(Long.parseLong(idUsuario)));
-        if(produtos.toArray().length == 0)
-            comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
-    }
-
     @GetMapping
     @ApiOperation(value="Retorna uma lista com todos os produtos")
     public ResponseEntity<?> findAll() {
@@ -72,8 +43,37 @@ public class ProdutoController {
 
     @GetMapping(path = "{id}")
     @ApiOperation(value="Retorna um produto unico com o id informado")
-    public ResponseEntity<?> findById(@PathVariable("id") Long id) {
+    public ResponseEntity<?> findById(@PathVariable("id") long id) {
         comumUtilService.verifyIfProdutoExists(id);
         return new ResponseEntity<>(produtoService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping(path = "buscar")
+    @ApiOperation(value="Retorna uma lista que contem o nome informado")
+    public ResponseEntity<?> findByName(@RequestParam String nome) {
+        List<Produto> produtos = produtoService.findByName(nome);
+        if(produtos.toArray().length == 0)
+            comumUtilService.noContentException("Sem resultados para exibir.");
+        return new ResponseEntity<>(produtos, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "categoria/{idCategoria}")
+    @ApiOperation(value="Retorna uma lista que contem a categoria(id) informada")
+    public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria) {
+        comumUtilService.verifyIfCategoriaExists(idCategoria);
+        List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
+        if(produtos.toArray().length == 0)
+            comumUtilService.noContentException("Sem resultados para exibir.");
+        return new ResponseEntity<>(produtos, HttpStatus.OK);
+    }
+
+    @GetMapping(path = "usuario/{idUsuario}")
+    @ApiOperation(value="Retorna uma lista que contem o usuário(id) informado")
+    public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario) {
+        comumUtilService.verifyIfUsuarioExists(idUsuario);
+        List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
+        if(produtos.toArray().length == 0)
+            comumUtilService.noContentException("Sem resultados para exibir.");
+        return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 }

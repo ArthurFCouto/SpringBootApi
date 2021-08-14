@@ -34,6 +34,14 @@ public class Role implements GrantedAuthority{
         this.apelido_role = apelido_role;
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "nome_role='" + nome_role + '\'' +
+                ", apelido_role='" + apelido_role + '\'' +
+                '}';
+    }
+
     public String getNome_role() {
         return nome_role;
     }

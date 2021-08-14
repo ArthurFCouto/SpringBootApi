@@ -32,7 +32,7 @@ public class ProdutoController {
     @Autowired
     ComumUtilService comumUtilService;
 
-    @GetMapping(path = "buscarnome")
+    @GetMapping(path = "buscar")
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Produto> produtos = produtoService.findByName(nome);
@@ -41,9 +41,9 @@ public class ProdutoController {
         return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "buscarcategoria")
+    @GetMapping(path = "categoria/{idCategoria}")
     @ApiOperation(value="Retorna uma lista que contem a categoria(id) informada")
-    public ResponseEntity<?> findByCategoria(@RequestParam String idCategoria) {
+    public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") String idCategoria) {
         comumUtilService.verifyIfCategoriaExists(Long.parseLong(idCategoria));
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(Long.parseLong(idCategoria)));
         if(produtos.toArray().length == 0)
@@ -51,20 +51,14 @@ public class ProdutoController {
         return new ResponseEntity<>(produtos, HttpStatus.OK);
     }
 
-    @GetMapping(path = "buscarusuario")
+    @GetMapping(path = "usuario/{idUsuario}")
     @ApiOperation(value="Retorna uma lista que contem o usuário(id) informado")
-    public ResponseEntity<?> findByUsuario(@RequestParam String idUsuario) {
+    public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") String idUsuario) {
         comumUtilService.verifyIfUsuarioExists(Long.parseLong(idUsuario));
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(Long.parseLong(idUsuario)));
         if(produtos.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(produtos, HttpStatus.OK);
-    }
-
-    @GetMapping(path = "quantidadeproduto")
-    @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
-    public ResponseEntity<?> length() {
-        return new ResponseEntity<>(produtoService.findAll().toArray().length, HttpStatus.OK);
     }
 
     @GetMapping

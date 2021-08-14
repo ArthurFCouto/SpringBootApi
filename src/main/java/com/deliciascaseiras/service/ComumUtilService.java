@@ -6,6 +6,6 @@ public interface ComumUtilService {
     void verifyIfUsuarioExists(Long id);
     void noContentException(String message);
     void badRequestException(String message);
-    void unauthotizedException();
+    void forbiddenException();
     void verifyIfBeingUsedCategory(Long id);
 }

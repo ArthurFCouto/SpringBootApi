@@ -60,4 +60,10 @@ public class CategoriaProdutoAdmin {
         categoriaProdutoService.delete(categoriaProdutoService.findById(id));
         return new ResponseEntity<>("Categoria deletada.", HttpStatus.OK);
     }
+
+    @GetMapping(path = "quantidacategoria")
+    @ApiOperation(value="Retorna a quantidade de categorias cadastradas")
+    public ResponseEntity<?> length() {
+        return new ResponseEntity<>(categoriaProdutoService.findAll().toArray().length, HttpStatus.OK);
+    }
 }

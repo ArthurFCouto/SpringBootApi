@@ -31,6 +31,14 @@ public class CategoriaProduto implements Serializable {
 
     }
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id_categoria=" + id_categoria +
+                ", nome_categoria='" + nome_categoria + '\'' +
+                '}';
+    }
+
     public CategoriaProduto(String nome_categoria) {
         setNome_categoria(nome_categoria);
     }

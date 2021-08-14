@@ -48,10 +48,4 @@ public class CategoriaProdutoController {
         comumUtilService.verifyIfCategoriaExists(id);
         return new ResponseEntity<>(categoriaProdutoService.findById(id), HttpStatus.OK);
     }
-
-    @GetMapping(path = "quantidacategoria")
-    @ApiOperation(value="Retorna a quantidade de categorias cadastradas")
-    public ResponseEntity<?> length() {
-        return new ResponseEntity<>(categoriaProdutoService.findAll().toArray().length, HttpStatus.OK);
-    }
 }

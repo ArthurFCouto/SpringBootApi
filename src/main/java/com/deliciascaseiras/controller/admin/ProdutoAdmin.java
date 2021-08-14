@@ -53,22 +53,22 @@ public class ProdutoAdmin {
         return new ResponseEntity<>("Produto salvo.", HttpStatus.OK);
     }
 
-    @PutMapping
+    @PutMapping(path = "{id}")
     @ApiOperation(value="Atualiza o produto com o id informado")
     public ResponseEntity<?> update(@RequestBody @Valid Produto produto,
                                     @RequestParam String idCategoria,
-                                    @RequestParam String idProduto) {
-        comumUtilService.verifyIfProdutoExists(Long.parseLong(idProduto));
+                                    @PathVariable("id") Long idProduto) {
+        comumUtilService.verifyIfProdutoExists(idProduto);
         comumUtilService.verifyIfCategoriaExists(Long.parseLong(idCategoria));
         Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
-        if (produtoService.findById(Long.parseLong(idProduto)).getUsuario_produto() != usuarioLogado)
+        if (produtoService.findById(idProduto).getUsuario_produto() != usuarioLogado)
             comumUtilService.badRequestException("Não foi possível alterar o produto.");
         new AppUtil().validProduto(produto);
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(Long.parseLong(idCategoria));
         produto.setUsuario_produto(usuarioLogado);
         produto.setCategoria_produto(categoriaProduto);
-        produto.setId_produto(Long.parseLong(idProduto));
-        produto.setData_produto(produtoService.findById(Long.parseLong(idProduto)).getData_produto());
+        produto.setId_produto(idProduto);
+        produto.setData_produto(produtoService.findById(idProduto).getData_produto());
         produtoService.save(produto);
         return new ResponseEntity<>("Produto atualizado.", HttpStatus.OK);
     }

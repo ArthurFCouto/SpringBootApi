@@ -24,6 +24,9 @@ public class Usuario implements Serializable, UserDetails {
     //Implementando a Serializable para que o Spring gere os ID do usuário automáticamente
     //implementando o UserDetails para que possamos fazer login com os usuarios cadastrados
 
+
+    private static final String baseUrl = "https://deliciascaseiras.herokuapp.com/";
+
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -65,6 +68,7 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuario_endereco")
     private List<Endereco> enderecoList;
 
+    @JsonIgnore
     @ManyToMany
     @JoinTable(
             name = "usuario_roles",
@@ -86,6 +90,21 @@ public class Usuario implements Serializable, UserDetails {
         setData_usuario(data_usuario);
         setDataatualizacao_usuario(data_usuario);
         setRoles(roles);
+    }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id_usuario: " + id_usuario +
+                ", email_usuario: " + email_usuario +
+                ", nome_usuario: " + nome_usuario +
+                ", aniversario_usuario: " + aniversario_usuario +
+                ", telefone_usuario: " + telefone_usuario +
+                ", produtoList: "+baseUrl+"usuario/"+id_usuario +
+                ", data_usuario: " + data_usuario +
+                ", dataatualizacao_usuario: " + dataatualizacao_usuario +
+                ", roles: " + roles +
+                '}';
     }
 
     public long getId_usuario() {
@@ -212,7 +231,6 @@ public class Usuario implements Serializable, UserDetails {
         return true;
     } //Informando que a conta está ativa
 
-    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { //Trabalhar a questão das Roles
         return (Collection<? extends GrantedAuthority>) this.roles;

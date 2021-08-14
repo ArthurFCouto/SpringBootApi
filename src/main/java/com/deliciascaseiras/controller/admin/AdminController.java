@@ -1,8 +1,10 @@
 package com.deliciascaseiras.controller.admin;
 
+import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.repository.RoleRepository;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.UsuarioService;
+import com.deliciascaseiras.service.ProdutoService;
 import com.deliciascaseiras.util.AppUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -32,11 +35,21 @@ public class AdminController {
     UsuarioService usuarioService;
 
     @Autowired
+    ProdutoService produtoService;
+
+    @Autowired
     ComumUtilService comumUtilService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    /*@RequestMapping(value = "/login", method = RequestMethod.GET)
     @ApiOperation(value = "Retorna a solicitação de login")
     public ResponseEntity<?> login() {
+        try {
+            request.login(cpf, senha);
+        } catch (ServletException e) {
+                    e.printStackTrace();
+                    ModelAndView mv = new ModelAndView("redirect:/login");
+                    return new ResponseEntity<>("Houve algum erro.", HttpStatus.ACCEPTED);
+        }
         return new ResponseEntity<>("Faça uma requisição POST para /login passando 'usuario' e 'senha'.", HttpStatus.ACCEPTED);
     }
 
@@ -61,17 +74,32 @@ public class AdminController {
             new SecurityContextLogoutHandler().logout(request, response, auth);
         }
         return new ResponseEntity<>("Logout efetuado.", HttpStatus.OK);
-    }
+    }*/
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
     @ApiOperation(value = "Informa a falta de permissão para acesso a página")
     public ResponseEntity<?> notAuthorized() {
-        return new ResponseEntity<>("Sem permissão de acesso.", HttpStatus.UNAUTHORIZED);
+        comumUtilService.forbiddenException();
+        return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
     @RequestMapping(value = "/admin/api/roles", method = RequestMethod.GET)
     @ApiOperation(value = "Retorna a lista de autorizações(roles) cadastradas")
     public ResponseEntity<?> returnRoles() {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/api/quantidadeproduto", method = RequestMethod.GET)
+    @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
+    public ResponseEntity<?> length() {
+        return new ResponseEntity<>(produtoService.findAll().toArray().length, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/admin/api/usuariologado", method = RequestMethod.GET)
+    @ApiOperation(value="Retorna o usuário logado e sua autorização")
+    public ResponseEntity<?> userLogin() {
+        String login = new AppUtil().userDetailUsername();
+        List<Role> role = usuarioService.findByEmail(login).getRoles();
+        return new ResponseEntity<>(login +" - "+role, HttpStatus.OK);
     }
 }

@@ -1,10 +1,10 @@
 package com.deliciascaseiras.service.serviceimpl;
 
+import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.error.BadRequestException;
+import com.deliciascaseiras.error.ForbiddenException;
 import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
-import com.deliciascaseiras.error.UnauthorizedException;
-import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.repository.CategoriaProdutoRepository;
 import com.deliciascaseiras.repository.ProdutoRepository;
 import com.deliciascaseiras.repository.UsuarioRepository;
@@ -61,8 +61,8 @@ public class ComumUtilServiceImpl implements ComumUtilService {
     }
 
     @Override
-    public void unauthotizedException(){
-        throw new UnauthorizedException();
+    public void forbiddenException(){
+        throw new ForbiddenException();
     }
 
     @Override

@@ -1,9 +1,9 @@
 package com.deliciascaseiras.error.handler;
 
 import com.deliciascaseiras.error.BadRequestException;
+import com.deliciascaseiras.error.ForbiddenException;
 import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
-import com.deliciascaseiras.error.UnauthorizedException;
 import com.deliciascaseiras.error.details.ApiError;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -31,10 +31,10 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(apiError, HttpStatus.NO_CONTENT);
     }
 
-    @ExceptionHandler(UnauthorizedException.class)
+    @ExceptionHandler(ForbiddenException.class)
     protected ResponseEntity<Object> handleUnauthorizedException(
-            UnauthorizedException unException) {
-        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, "Not authorized", unException);
+            ForbiddenException frException) {
+        ApiError apiError = new ApiError(HttpStatus.UNAUTHORIZED, "Not authorized", frException);
         return new ResponseEntity<>(apiError, HttpStatus.UNAUTHORIZED);
     }
 

@@ -60,6 +60,21 @@ public class Produto implements Serializable {
                     name = "usuario_id", referencedColumnName = "id_usuario")) //Aqui criamos uma tabela para o relacionamento entre o usuario e os produtos
     private Usuario usuario_produto;
 
+    @Override
+    public String toString() {
+        return "{" +
+                "id_produto=" + id_produto +
+                ", nome_produto='" + nome_produto + '\'' +
+                ", sabor_produto='" + sabor_produto + '\'' +
+                ", preco_produto=" + preco_produto +
+                ", categoria_produto=" + categoria_produto +
+                ", disponivel_produto=" + disponivel_produto +
+                ", detalhe_produto='" + detalhe_produto + '\'' +
+                ", data_produto=" + data_produto +
+                ", dataatualizacao_produto=" + dataatualizacao_produto +
+                '}';
+    }
+
     public long getId_produto() {
         return id_produto;
     }

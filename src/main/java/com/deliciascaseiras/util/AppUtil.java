@@ -1,16 +1,10 @@
 package com.deliciascaseiras.util;
 
-import com.deliciascaseiras.error.BadRequestException;
-import com.deliciascaseiras.entity.CategoriaProduto;
-import com.deliciascaseiras.entity.Produto;
-import com.deliciascaseiras.entity.Usuario;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class AppUtil {
 
@@ -86,6 +80,7 @@ public class AppUtil {
     }
 
     //Método para efetuar a validação manual da categoria
+    /* //Método utilizado anteriormente
     public void validCategoria(CategoriaProduto categoriaProduto) {
         List<ListError> error = new ArrayList<>(); //Cria uma lista para retornar os erros
         Conditions conditions = new Conditions(); //Cria um acesso a classe que contém os if's
@@ -102,9 +97,10 @@ public class AppUtil {
             String errorString = String.join(",", list);
             throw new BadRequestException(errorString);
         }
-    }
+    }*/
 
     //Método para efetuar a validação manual do produto
+    /* //Método utilizado anteriormente
     public void validProduto(Produto produto) {
         List<ListError> error = new ArrayList<>();
         Conditions conditions = new Conditions();
@@ -126,9 +122,10 @@ public class AppUtil {
             String errorString = error.stream().map(ListError::getError).collect(Collectors.joining(",")); //Estou pegando as menssagens de erros e separando por virgula, eram uma lista agora será apenas uma String
             throw new BadRequestException(titleString + " - " + errorString);
         }
-    }
+    }*/
 
     //Método para efetuar a validação manual do usuário
+    /* //Método utilizado anteriormente
     public void validUsuario(Usuario usuario) {
         List<ListError> error = new ArrayList<>();
         Conditions conditions = new Conditions();
@@ -165,9 +162,10 @@ public class AppUtil {
             String errorString = String.join(",", list); //Transformando uma lista de String em uma String com delimitação de vírgula
             throw new BadRequestException(errorString);
         }
-    }
+    }*/
 
     //Classe para testar as condições
+    /* //Classes utilizadas anteriormente
     class Conditions {
 
         public ListError stringIsEmpty(String title, String value) {
@@ -215,5 +213,5 @@ public class AppUtil {
         public String getError() {
             return error;
         }
-    }
+    }*/
 }

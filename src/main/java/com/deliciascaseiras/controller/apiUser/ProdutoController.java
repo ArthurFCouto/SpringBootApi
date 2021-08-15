@@ -1,6 +1,7 @@
 package com.deliciascaseiras.controller.apiUser;
 
 import com.deliciascaseiras.entity.Produto;
+import com.deliciascaseiras.models.modelsShow.ProdutoShow;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;
@@ -38,14 +39,14 @@ public class ProdutoController {
         List<Produto> produtos = produtoService.findAll();
         if(produtos.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
+        return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")
     @ApiOperation(value="Retorna um produto unico com o id informado")
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
         comumUtilService.verifyIfProdutoExists(id);
-        return new ResponseEntity<>(produtoService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(new ProdutoShow(produtoService.findById(id)), HttpStatus.OK);
     }
 
     @GetMapping(path = "buscar")
@@ -54,7 +55,7 @@ public class ProdutoController {
         List<Produto> produtos = produtoService.findByName(nome);
         if(produtos.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
+        return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "categoria/{idCategoria}")
@@ -64,7 +65,7 @@ public class ProdutoController {
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
         if(produtos.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
+        return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "usuario/{idUsuario}")
@@ -74,6 +75,6 @@ public class ProdutoController {
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
         if(produtos.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(produtos, HttpStatus.OK);
+        return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 }

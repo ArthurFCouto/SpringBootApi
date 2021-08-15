@@ -105,7 +105,6 @@ public class AdminController {
         } catch (Exception exception) {
             comumUtilService.badRequestException("Erro ao excluir usuário.\nDetails: "+exception);
         }
-
         return new ResponseEntity<>("Usuário deletado!",HttpStatus.OK);
     }
 }

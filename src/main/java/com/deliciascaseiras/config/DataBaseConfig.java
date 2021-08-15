@@ -10,7 +10,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-@Configuration
+//@Configuration
 public class DataBaseConfig {
 
     @Bean

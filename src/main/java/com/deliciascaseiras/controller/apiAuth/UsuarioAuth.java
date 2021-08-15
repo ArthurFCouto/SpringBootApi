@@ -3,6 +3,8 @@ package com.deliciascaseiras.controller.apiAuth;
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.error.ResourceNotFoundException;
+import com.deliciascaseiras.models.UsuarioModel;
+import com.deliciascaseiras.models.modelsShow.UsuarioShow;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.UsuarioService;
 import com.deliciascaseiras.util.AppUtil;
@@ -13,8 +15,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -39,7 +43,7 @@ public class UsuarioAuth {
         if (usuarios.toArray().length == 1) //Se tiver apenas um usuário cadastrado, ele será o apiAuth@apiAuth porque não é possível excluí-lo
             comumUtilService.noContentException("Sem resultados para exibir."); //Desse modo não exibimos
         usuarios.remove(usuarioService.findByEmail(emailAdmin)); //Se tiver mais usuários cadastrados, removemos o apiAuth@apiAuth
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+        return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")
@@ -48,7 +52,7 @@ public class UsuarioAuth {
         comumUtilService.verifyIfUsuarioExists(id);
         if(usuarioService.findById(id).getEmail_usuario().equals(emailAdmin)) //Se o ID informado for o apiAuth@apiAuth
             throw new ResourceNotFoundException("Não existe o usuário com a ID: " + id); //Não exibimos os detalhes
-        return new ResponseEntity<>(usuarioService.findById(id), HttpStatus.OK);
+        return new ResponseEntity<>(new UsuarioShow(usuarioService.findById(id)), HttpStatus.OK);
     }
 
     @GetMapping(path = "buscar")
@@ -59,23 +63,24 @@ public class UsuarioAuth {
             usuarios.remove(usuarioService.findByEmail(emailAdmin)); //E removemos ele da lista se estiver
         if (usuarios.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
-        return new ResponseEntity<>(usuarios, HttpStatus.OK);
+        return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
     }
 
     @PutMapping(value = "{id}")
     @ApiOperation(value="Atualiza o usuário com o ID informado (E-mail não pode ser atualizado.)")
-    public ResponseEntity<?> update(@RequestBody @Valid Usuario usuario,
-                                    @PathVariable("id") long id) {
+    public ResponseEntity<?> update(@RequestBody @Valid UsuarioModel usuarioModel,
+                                    @PathVariable("id") long id,
+                                    UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfUsuarioExists(id);
-        new AppUtil().validUsuario(usuario);
-        Usuario usuarioAux = usuarioService.findById(id);
-        usuarioAux.setNome_usuario(usuario.getNome_usuario());
-        usuarioAux.setAniversario_usuario(usuario.getAniversario_usuario());
-        usuarioAux.setTelefone_usuario(usuario.getTelefone_usuario());
-        usuarioAux.setSenha_usuario(new BCryptPasswordEncoder().encode(usuario.getSenha_usuario()));
-        usuarioAux.setDataatualizacao_usuario(LocalDate.now());
-        usuarioService.save(usuarioAux);
-        return new ResponseEntity<>("Usuário atualizado.",HttpStatus.OK);
+        Usuario usuario = usuarioService.findById(id);
+        usuario.setNome_usuario(usuarioModel.getNome_usuario());
+        usuario.setAniversario_usuario(usuarioModel.getAniversario_usuario());
+        usuario.setTelefone_usuario(usuarioModel.getTelefone_usuario());
+        usuario.setSenha_usuario(new BCryptPasswordEncoder().encode(usuario.getSenha_usuario()));
+        usuario.setDataatualizacao_usuario(LocalDate.now());
+        usuarioService.save(usuario);
+        URI uri = uriBuilder.path("/api/auth/usuario/{id}").buildAndExpand(usuario.getId_usuario()).toUri();
+        return ResponseEntity.created(uri).body(new UsuarioShow(usuario));
     }
 
     //Apenas para teste (SpringSecurity) em ambiente de desenvolvimento

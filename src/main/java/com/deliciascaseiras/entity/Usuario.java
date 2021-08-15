@@ -3,17 +3,12 @@ package com.deliciascaseiras.entity;
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.entity.auxEntity.Endereco;
 import com.deliciascaseiras.util.AppUtil;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import javax.persistence.*;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.Collection;
@@ -32,31 +27,19 @@ public class Usuario implements Serializable, UserDetails {
     private long id_usuario;
 
     @Column(unique = true)
-    @Email(message = "Digite um E-mail válido")
-    @Size(max = 60, message = "E-MAIL - Máximo 60 caracteres")
-    @NotBlank(message = "E-MAIL - Não pode ser vazio")
     private String email_usuario;
 
-    @Size(max = 42, message = "NOME - Máximo 42 caracteres")
-    @NotBlank(message = "NOME - Não pode ser vazio")
     private String nome_usuario;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @NotBlank(message = "ANIVERSÁRIO - Não pode ser vazio")
     private LocalDate aniversario_usuario;
 
-    @Size(min=11, max = 11, message = "TELEFONE - Informe o DDD e o telefone")
-    @NotNull(message = "TELEFONE - Não pode ser vazio")
     private long telefone_usuario;
 
-    @Size(min = 8, message = "SENHA - Mínimo 8 caracteres")
-    @NotBlank(message = "SENHA - Não pode ser vazio")
+    @JsonIgnore
     private String senha_usuario;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate data_usuario;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataatualizacao_usuario;
 
     @JsonIgnore
@@ -88,6 +71,15 @@ public class Usuario implements Serializable, UserDetails {
         setData_usuario(data_usuario);
         setDataatualizacao_usuario(data_usuario);
         setRoles(roles);
+    }
+
+    public Usuario(String email_usuario, String nome_usuario, LocalDate aniversario_usuario, long telefone_usuario, String senha_usuario, List<Role> roles) {
+        this.email_usuario = email_usuario;
+        this.nome_usuario = nome_usuario;
+        this.aniversario_usuario = aniversario_usuario;
+        this.telefone_usuario = telefone_usuario;
+        this.senha_usuario = new BCryptPasswordEncoder().encode(senha_usuario);
+        this.roles = roles;
     }
 
     @Override
@@ -193,43 +185,36 @@ public class Usuario implements Serializable, UserDetails {
         this.roles = roles;
     }
 
-    @JsonIgnore
     @Override
     public String getPassword() {
         return this.senha_usuario;
     } //Definindo no UserDetails qual será a senha utilizada
 
-    @JsonIgnore
     @Override
     public String getUsername() {
         return this.email_usuario;
     } //Informando qual será o login(userName) utilizado
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonExpired() {
         return true;
     } //Informando que a conta nunca expira
 
-    @JsonIgnore
     @Override
     public boolean isAccountNonLocked() {
         return true;
     } //Informando que a conta não está bloqueada
 
-    @JsonIgnore
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
     } //Informando que as credenciais não expiram
 
-    @JsonIgnore
     @Override
     public boolean isEnabled() {
         return true;
     } //Informando que a conta está ativa
 
-    @JsonIgnore
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() { //Trabalhar a questão das Roles
         return (Collection<? extends GrantedAuthority>) this.roles;

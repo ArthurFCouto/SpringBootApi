@@ -1,10 +1,8 @@
 package com.deliciascaseiras.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.time.LocalDate;
 
@@ -18,15 +16,10 @@ public class Produto implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_produto;
 
-    @Size(max = 25, message = "NOME - No máximo 25 caracteres")
-    @NotBlank(message = "NOME - Não pode ser vazio")
     private String nome_produto;
 
-    @Size(max = 25, message = "SABOR - No máximo 25 caracteres")
-    @NotBlank(message = "SABOR - Não pode ser vazio")
     private String sabor_produto;
 
-    @NotNull(message = "PREÇO - Não pode ser vazio")
     private float preco_produto;
 
     @ManyToOne //Relação muitos para um com categoria
@@ -38,11 +31,9 @@ public class Produto implements Serializable {
                     name = "categoria_id", referencedColumnName = "id_categoria"))
     private CategoriaProduto categoria_produto;
 
-    @NotNull(message = "DISPONIBILIDADE - Não pode ser vazio")
     private boolean disponivel_produto;
 
     @Lob
-    @Size(max = 120, message = "DETALHES - Máximo 120 caracteres.")
     private String detalhe_produto;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
@@ -73,6 +64,19 @@ public class Produto implements Serializable {
                 ", data_produto=" + data_produto +
                 ", dataatualizacao_produto=" + dataatualizacao_produto +
                 '}';
+    }
+
+    public Produto() {
+    }
+
+    public Produto(String nome_produto, String sabor_produto, CategoriaProduto categoriaProduto,float preco_produto, boolean disponivel_produto, String detalhe_produto, Usuario usuario) {
+        this.nome_produto = nome_produto;
+        this.sabor_produto = sabor_produto;
+        this.categoria_produto = categoriaProduto;
+        this.preco_produto = preco_produto;
+        this.disponivel_produto = disponivel_produto;
+        this.detalhe_produto = detalhe_produto;
+        this.usuario_produto = usuario;
     }
 
     public long getId_produto() {

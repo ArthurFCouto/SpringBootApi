@@ -3,7 +3,6 @@ package com.deliciascaseiras.controller.apiAdmin;
 import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
-import com.deliciascaseiras.util.AppUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @CrossOrigin("*") //Deixando a API disponível para acesso em qualquer dominio
-@RequestMapping("api/admin/categoriaproduto")  //Mapeamento da URL para entrar no controller
+@RequestMapping(value = "api/admin/categoriaproduto", consumes = "applicaion/json")  //Mapeamento da URL para entrar no controller
 @RestController
 @Api(value="API REST - Controle de categorias") //Passando informações sobre essa API (Breve descrição)
 public class CategoriaProdutoAdmin {
@@ -28,7 +27,6 @@ public class CategoriaProdutoAdmin {
     @PostMapping
     @ApiOperation(value="Salva uma categoria") //Detalhando o método no swagger
     public ResponseEntity<?> save(@RequestBody @Valid CategoriaProduto categoria) {
-        new AppUtil().validCategoria(categoria);
         try {
             categoriaProdutoService.save(categoria);
         } catch (Exception exception) {
@@ -39,10 +37,9 @@ public class CategoriaProdutoAdmin {
 
     @PutMapping(path = "{id}")
     @ApiOperation(value="Atualiza a categoria com o ID informado")
-    public ResponseEntity<?> update(@Valid @RequestBody CategoriaProduto categoria,
+    public ResponseEntity<?> update(@RequestBody @Valid CategoriaProduto categoria,
                                     @PathVariable("id") long id) {
         comumUtilService.verifyIfCategoriaExists(id);
-        new AppUtil().validCategoria(categoria);
         categoria.setId_categoria(id);
         try {
             categoriaProdutoService.save(categoria);

@@ -3,6 +3,8 @@ package com.deliciascaseiras.controller.apiAuth;
 import com.deliciascaseiras.entity.CategoriaProduto;
 import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.entity.Usuario;
+import com.deliciascaseiras.models.ProdutoModel;
+import com.deliciascaseiras.models.modelsShow.ProdutoShow;
 import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;
@@ -14,12 +16,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.time.LocalDate;
 
 @CrossOrigin(origins = "*")
-@RequestMapping("api/auth/produto")
+@RequestMapping(value = "api/auth/produto", consumes = "application/json")
 @RestController
 @Api(value="API REST - Controle de produtos")
 public class ProdutoAuth {
@@ -38,41 +42,41 @@ public class ProdutoAuth {
 
     @PostMapping
     @ApiOperation(value="Salva um produto")
-    public ResponseEntity<?> save(@RequestBody @Valid Produto produto,
-                                  @RequestParam long idCategoria) {
+    public ResponseEntity<?> save(@RequestBody @Valid ProdutoModel produtoModel,
+                                  @RequestParam long idCategoria,
+                                  UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfCategoriaExists(idCategoria);
         Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
         if(usuarioService.verifyIsAdmin(usuarioLogado))
             comumUtilService.badRequestException("Não foi possível cadastrar o produto (Não autorizado para o perfil do usuário).");
-        new AppUtil().validProduto(produto);
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
-        produto.setUsuario_produto(usuarioLogado);
-        produto.setCategoria_produto(categoriaProduto);
+        Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto);
         produto.setData_produto(LocalDate.now());
         produto.setDataatualizacao_produto(LocalDate.now());
         produtoService.save(produto);
-        return new ResponseEntity<>("Produto salvo.", HttpStatus.OK);
+        URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
+        return ResponseEntity.created(uri).body(new ProdutoShow(produto));
     }
 
     @PutMapping(path = "{id}")
     @ApiOperation(value="Atualiza o produto com o id informado")
-    public ResponseEntity<?> update(@RequestBody @Valid Produto produto,
+    public ResponseEntity<?> update(@RequestBody @Valid ProdutoModel produtoModel,
                                     @RequestParam long idCategoria,
-                                    @PathVariable("id") long idProduto) {
+                                    @PathVariable("id") long idProduto,
+                                    UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfProdutoExists(idProduto);
         comumUtilService.verifyIfCategoriaExists(idCategoria);
         Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
         if (produtoService.findById(idProduto).getUsuario_produto() != usuarioLogado)
             comumUtilService.badRequestException("Não foi possível atualizar o produto (Pertence a outro usuário).");
-        new AppUtil().validProduto(produto);
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
+        Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto);
         produto.setId_produto(idProduto);
-        produto.setUsuario_produto(usuarioLogado);
-        produto.setCategoria_produto(categoriaProduto);
         produto.setData_produto(produtoService.findById(idProduto).getData_produto());
         produto.setDataatualizacao_produto(LocalDate.now());
         produtoService.save(produto);
-        return new ResponseEntity<>("Produto atualizado.", HttpStatus.OK);
+        URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
+        return ResponseEntity.created(uri).body(new ProdutoShow(produto));
     }
 
     @DeleteMapping(path = "{id}")

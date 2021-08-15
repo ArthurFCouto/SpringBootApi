@@ -9,12 +9,12 @@ import java.util.List;
 public class AppUtil {
 
     //Método para transformar uma frase em lista de palavras com mais de duas letras
-    public List<String> stringForList(String name) {
+    public static List<String> stringForList(String name) {
         List<String> stringList = new ArrayList<>(); //Criando a lista que será retornada
         String nome = name.replaceAll("\\s|-|;", "");
         //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços, ponto e virgula por vazio ("")
         //A barra funciona neste caso como um e/ou
-        if (nome.length() >= 1) { //Verificando se a String não está vazia
+        if (nome.length() >= 2) { //Verificando se a String possui mais de dois caracteres
             String[] stringArray = name.split("\\s|-|;"); //Criando um array/vetor do tipo string
             //O método split, separa uma string em um Array, dividindo pelos regex passados como parametros, no caso, espaço, traço e ponto e virgula
             //A barra funciona neste caso como um e/ou
@@ -23,13 +23,13 @@ public class AppUtil {
                     stringList.add(stringAux); //Adicionando a lista de retorno apenas as palavras da lista que sejam maiores que dois caracteres
             }
         } else {
-            stringList.add(nome); //Se a frase estiver vazia a lista é retornada com apenas a frase vazia
+            stringList.add(nome); //Se a string tiver menos que dois caracteres, apenas ela é retornada
         }
         return stringList;
     }
 
     /* //Método utilizado anteriormente
-    public List<String> stringForList(String name) {
+    public static List<String> stringForList(String name) {
         List<String> stringList = new ArrayList<>(); //Criando a lista que será retornada
         String nome = name.replaceAll("\\s|-|;", "");
         //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços, ponto e virgula por vazio ("")
@@ -56,7 +56,7 @@ public class AppUtil {
     } */
 
     //Método booleano para verificar se a string contém algum valor da lista
-    public boolean stringCompareList(String nameToCompare, List<String> listToCompare) {
+    public static boolean stringCompareList(String nameToCompare, List<String> listToCompare) {
         for (String aux : listToCompare) {
             if (nameToCompare.toUpperCase().contains(aux.toUpperCase()))
                 return true;
@@ -65,7 +65,7 @@ public class AppUtil {
     }
 
     //Retorna o Username do usuário logado
-    public String userDetailUsername() {
+    public static String userDetailUsername() {
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (principal instanceof UserDetails) {
             return ((UserDetails) principal).getUsername();
@@ -75,8 +75,12 @@ public class AppUtil {
     }
 
     //Retorna a URL base da aplicação
-    public String baseURL() {
+    public static String baseURL() {
         return "https://deliciascaseiras.herokuapp.com/";
+    }
+
+    public static String emailAdmin() {
+        return "admin@admin.com";
     }
 
     //Método para efetuar a validação manual da categoria

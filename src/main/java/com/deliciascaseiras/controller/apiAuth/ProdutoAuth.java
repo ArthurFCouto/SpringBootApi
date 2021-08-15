@@ -23,7 +23,7 @@ import java.net.URI;
 import java.time.LocalDate;
 
 @CrossOrigin(origins = "*")
-@RequestMapping(value = "api/auth/produto", consumes = "application/json")
+@RequestMapping(value = "api/auth/produto")
 @RestController
 @Api(value="API REST - Controle de produtos")
 public class ProdutoAuth {
@@ -46,7 +46,7 @@ public class ProdutoAuth {
                                   @RequestParam long idCategoria,
                                   UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfCategoriaExists(idCategoria);
-        Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
+        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
         if(usuarioService.verifyIsAdmin(usuarioLogado))
             comumUtilService.badRequestException("Não foi possível cadastrar o produto (Não autorizado para o perfil do usuário).");
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
@@ -66,7 +66,7 @@ public class ProdutoAuth {
                                     UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfProdutoExists(idProduto);
         comumUtilService.verifyIfCategoriaExists(idCategoria);
-        Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
+        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
         if (produtoService.findById(idProduto).getUsuario_produto() != usuarioLogado)
             comumUtilService.badRequestException("Não foi possível atualizar o produto (Pertence a outro usuário).");
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
@@ -83,7 +83,7 @@ public class ProdutoAuth {
     @ApiOperation(value="Deleta um produto com o id informado")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
         comumUtilService.verifyIfProdutoExists(id);
-        Usuario usuarioLogado = usuarioService.findByEmail(new AppUtil().userDetailUsername());
+        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
         if (produtoService.findById(id).getUsuario_produto() != usuarioLogado) //Verificamos se o usuário do produto é igual ao usuário logado
             if(!usuarioService.verifyIsAdmin(usuarioLogado)) //Se não for, verificamos se é o usuário apiAuth
                 comumUtilService.badRequestException("Não foi possível excluir o produto (Pertence a outro usuário)."); //Se não for, não permitimos deletar

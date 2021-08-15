@@ -30,8 +30,8 @@ public class UsuarioServiceImpl implements UsuarioService {
     @Override
     public List<Usuario> findByName(String nome) {
         List<Usuario> todosUsuarios = findAll();
-        List<String> tagUsuarios = new AppUtil().stringForList(nome);
-        Predicate<Usuario> filterUsuarioList = usuario -> new AppUtil().stringCompareList(usuario.getNome_usuario(), tagUsuarios);
+        List<String> tagUsuarios = AppUtil.stringForList(nome);
+        Predicate<Usuario> filterUsuarioList = usuario -> AppUtil.stringCompareList(usuario.getNome_usuario(), tagUsuarios);
         List<Usuario> usuariosReturn = todosUsuarios.stream().filter(filterUsuarioList).collect(Collectors.toList());
         return usuariosReturn;
     }

@@ -34,15 +34,13 @@ public class UsuarioAuth {
     @Autowired
     ComumUtilService comumUtilService;
 
-    private final String emailAdmin = "admin@admin.com";
-
     @GetMapping
     @ApiOperation(value="Retorna uma lista com todos os usuarios")
     public ResponseEntity<?> findAll() {
         List<Usuario> usuarios = usuarioService.findAll();
         if (usuarios.toArray().length == 1) //Se tiver apenas um usuário cadastrado, ele será o apiAuth@apiAuth porque não é possível excluí-lo
             comumUtilService.noContentException("Sem resultados para exibir."); //Desse modo não exibimos
-        usuarios.remove(usuarioService.findByEmail(emailAdmin)); //Se tiver mais usuários cadastrados, removemos o apiAuth@apiAuth
+        usuarios.remove(usuarioService.findByEmail(AppUtil.emailAdmin())); //Se tiver mais usuários cadastrados, removemos o apiAuth@apiAuth
         return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
     }
 
@@ -50,7 +48,7 @@ public class UsuarioAuth {
     @ApiOperation(value="Retorna um usuario unico com o ID informado")
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
         comumUtilService.verifyIfUsuarioExists(id);
-        if(usuarioService.findById(id).getEmail_usuario().equals(emailAdmin)) //Se o ID informado for o apiAuth@apiAuth
+        if(usuarioService.findById(id).getEmail_usuario().equals(AppUtil.emailAdmin())) //Se o ID informado for o apiAuth@apiAuth
             throw new ResourceNotFoundException("Não existe o usuário com a ID: " + id); //Não exibimos os detalhes
         return new ResponseEntity<>(new UsuarioShow(usuarioService.findById(id)), HttpStatus.OK);
     }
@@ -59,8 +57,8 @@ public class UsuarioAuth {
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Usuario> usuarios = usuarioService.findByName(nome);
-        if(usuarios.contains(usuarioService.findByEmail(emailAdmin))) //Verificamos se o usuario apiAuth@apiAuth está na lista
-            usuarios.remove(usuarioService.findByEmail(emailAdmin)); //E removemos ele da lista se estiver
+        if(usuarios.contains(usuarioService.findByEmail(AppUtil.emailAdmin()))) //Verificamos se o usuario apiAuth@apiAuth está na lista
+            usuarios.remove(usuarioService.findByEmail(AppUtil.emailAdmin())); //E removemos ele da lista se estiver
         if (usuarios.toArray().length == 0)
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
@@ -87,7 +85,7 @@ public class UsuarioAuth {
     @GetMapping(value = "usuariologado")
     @ApiOperation(value="Retorna o usuário logado e sua autorização")
     public ResponseEntity<?> userLogin() {
-        String login = new AppUtil().userDetailUsername();
+        String login = AppUtil.userDetailUsername();
         List<Role> role = usuarioService.findByEmail(login).getRoles();
         return new ResponseEntity<>(login +" - "+role, HttpStatus.OK);
     }

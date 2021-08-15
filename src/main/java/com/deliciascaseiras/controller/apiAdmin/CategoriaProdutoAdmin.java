@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 
 @CrossOrigin("*") //Deixando a API disponível para acesso em qualquer dominio
-@RequestMapping(value = "api/admin/categoriaproduto", consumes = "applicaion/json")  //Mapeamento da URL para entrar no controller
+@RequestMapping(value = "api/admin/categoriaproduto")  //Mapeamento da URL para entrar no controller
 @RestController
 @Api(value="API REST - Controle de categorias") //Passando informações sobre essa API (Breve descrição)
 public class CategoriaProdutoAdmin {
@@ -30,7 +30,7 @@ public class CategoriaProdutoAdmin {
         try {
             categoriaProdutoService.save(categoria);
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro durante o cadastro.\nDetails: "+exception);
+            comumUtilService.badRequestException("Erro durante o cadastro. Details: "+exception);
         }
         return new ResponseEntity<>("Categoria cadastrada.", HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class CategoriaProdutoAdmin {
         try {
             categoriaProdutoService.save(categoria);
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro durante a atualização.\nDetails: "+exception);
+            comumUtilService.badRequestException("Erro durante a atualização. Details: "+exception);
         }
         return new ResponseEntity<>("Categoria atualizada.", HttpStatus.OK);
     }
@@ -57,7 +57,7 @@ public class CategoriaProdutoAdmin {
         try {
             categoriaProdutoService.delete(categoriaProdutoService.findById(id));
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro ao deletar categoria.\nDetails: "+exception);
+            comumUtilService.badRequestException("Erro ao deletar categoria. Details: "+exception);
         }
         return new ResponseEntity<>("Categoria deletada.", HttpStatus.OK);
     }

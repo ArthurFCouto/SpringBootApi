@@ -37,7 +37,7 @@ public class ProdutoController {
     @ApiOperation(value="Retorna uma lista com todos os produtos")
     public ResponseEntity<?> findAll() {
         List<Produto> produtos = produtoService.findAll();
-        if(produtos.toArray().length == 0)
+        if(produtos.isEmpty())
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
@@ -53,7 +53,7 @@ public class ProdutoController {
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Produto> produtos = produtoService.findByName(nome);
-        if(produtos.toArray().length == 0)
+        if(produtos.isEmpty())
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
@@ -63,17 +63,17 @@ public class ProdutoController {
     public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria) {
         comumUtilService.verifyIfCategoriaExists(idCategoria);
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
-        if(produtos.toArray().length == 0)
+        if(produtos.isEmpty())
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "usuario/{idUsuario}")
-    @ApiOperation(value="Retorna uma lista que contem o usuário(id) informado")
+    @ApiOperation(value="Retorna uma lista que contem os produtos do usuario(id) informado.")
     public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario) {
         comumUtilService.verifyIfUsuarioExists(idUsuario);
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
-        if(produtos.toArray().length == 0)
+        if(produtos.isEmpty())
             comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }

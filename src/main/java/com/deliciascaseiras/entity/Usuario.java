@@ -46,8 +46,10 @@ public class Usuario implements Serializable, UserDetails {
     @OneToMany(mappedBy = "usuario_produto")
     private List<Produto> produtoList;
 
-    @OneToMany(mappedBy = "usuario_endereco")
-    private List<Endereco> enderecoList;
+    //@OneToMany(mappedBy = "usuario_endereco")
+    @OneToOne
+    //private List<Endereco> enderecoList;
+    private Endereco enderecoList;
 
     @JsonIgnore
     @ManyToMany
@@ -90,7 +92,7 @@ public class Usuario implements Serializable, UserDetails {
                 ", nome_usuario: " + nome_usuario +
                 ", aniversario_usuario: " + aniversario_usuario +
                 ", telefone_usuario: " + telefone_usuario +
-                ", produtoList: "+new AppUtil().baseURL()+"api/user/produto/usuario/"+id_usuario +
+                ", produtoList: "+AppUtil.baseURL()+"api/user/produto/usuario/"+id_usuario +
                 ", data_usuario: " + data_usuario +
                 ", dataatualizacao_usuario: " + dataatualizacao_usuario +
                 ", roles: " + roles +
@@ -169,11 +171,11 @@ public class Usuario implements Serializable, UserDetails {
         this.produtoList = produtoList;
     }
 
-    public List<Endereco> getEnderecoList() {
+    public Endereco getEnderecoList() {
         return enderecoList;
     }
 
-    public void setEnderecoList(List<Endereco> enderecoList) {
+    public void setEnderecoList(Endereco enderecoList) {
         this.enderecoList = enderecoList;
     }
 

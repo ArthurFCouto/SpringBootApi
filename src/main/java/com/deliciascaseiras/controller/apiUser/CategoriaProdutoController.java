@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @CrossOrigin("*")
-@RequestMapping("api/user/categoriaproduto")
+@RequestMapping("api/user/categoria")
 @RestController
 @Api(value="API REST - Informações de categorias")
 public class CategoriaProdutoController {

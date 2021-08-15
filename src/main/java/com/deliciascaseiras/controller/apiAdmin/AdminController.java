@@ -73,7 +73,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/api/admin/roles", method = RequestMethod.GET)
-    @ApiOperation(value = "Retorna a lista de autorizações (roles) cadastradas")
+    @ApiOperation(value = "Retorna a lista de autorizações(roles) cadastradas")
     public ResponseEntity<?> returnRoles() {
         return new ResponseEntity<>(roleRepository.findAll(), HttpStatus.OK);
     }
@@ -94,7 +94,7 @@ public class AdminController {
     @ApiOperation(value="Deleta o usuário com o ID informado")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         comumUtilService.verifyIfUsuarioExists(id);
-        if (usuarioService.findById(id).getEmail_usuario().equals(new AppUtil().userDetailUsername()))
+        if (usuarioService.findById(id).getEmail_usuario().equals(AppUtil.userDetailUsername()))
             comumUtilService.badRequestException("Faça esta solicitação a outro ADMIN.");
         if (usuarioService.findById(id).getEmail_usuario().equals("admin@admin.com"))
             comumUtilService.badRequestException("Não é possível excluir este usuário.");

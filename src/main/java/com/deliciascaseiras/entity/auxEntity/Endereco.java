@@ -42,13 +42,14 @@ public class Endereco implements Serializable {
     private String uf_endereco;
 
     @JsonIgnore
-    @ManyToOne
+    /*@ManyToOne
     @JoinTable(
             name = "endereco_usuario",
             joinColumns = @JoinColumn(
                     name = "endereco_id", referencedColumnName = "id_endereco"),
             inverseJoinColumns = @JoinColumn(
-                    name = "usuario_id", referencedColumnName = "id_usuario"))
+                    name = "usuario_id", referencedColumnName = "id_usuario"))*/
+    @OneToOne
     private Usuario usuario_endereco;
 
     public long getId_endereco() {

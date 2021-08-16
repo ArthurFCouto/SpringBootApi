@@ -4,9 +4,6 @@ import com.deliciascaseiras.entity.Usuario;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import java.io.Serializable;
 
 @Table(name="endereco")
@@ -18,27 +15,16 @@ public class Endereco implements Serializable {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_endereco;
 
-    @Size(max = 45, message = "LOGRADOURO - Máximo 45 caracteres")
-    @NotEmpty(message = "LOGRADOURO - Não pode ser vazio")
     private String logradouro_endereco;
 
-    @Size(max = 8, message = "NÚMERO - Máximo 8 caracteres")
-    @NotEmpty(message = "NÚMERO - Não pode ser vazio")
     private String numero_endereco;
 
-    @Size(max = 36, message = "BAIRRO/COMPLEMENTO - Máximo 36 caracteres")
     private String complemento_endereco;
 
-    @Size(max = 10, message = "CEP - Insira apenas números")
-    @NotEmpty(message = "CEP - Não pode ser vazio")
     private String cep_endereco;
 
-    @Size(max = 35, message = "CIDADE - Máximo 35 caracteres")
-    @NotBlank(message = "CIDADE - Não pode ser vazio")
     private String cidade_endereco;
 
-    @Size(max = 2, message = "UF - Informe abreviado (XX)")
-    @NotBlank(message = "UF - Não pode ser vazio")
     private String uf_endereco;
 
     @JsonIgnore
@@ -51,6 +37,19 @@ public class Endereco implements Serializable {
                     name = "usuario_id", referencedColumnName = "id_usuario"))*/
     @OneToOne
     private Usuario usuario_endereco;
+
+    public Endereco() {
+    }
+
+    public Endereco(String logradouro_endereco, String numero_endereco, String complemento_endereco, String cep_endereco, String cidade_endereco, String uf_endereco, Usuario usuario_endereco) {
+        this.logradouro_endereco = logradouro_endereco;
+        this.numero_endereco = numero_endereco;
+        this.complemento_endereco = complemento_endereco;
+        this.cep_endereco = cep_endereco;
+        this.cidade_endereco = cidade_endereco;
+        this.uf_endereco = uf_endereco;
+        this.usuario_endereco = usuario_endereco;
+    }
 
     public long getId_endereco() {
         return id_endereco;

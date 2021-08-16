@@ -20,7 +20,7 @@ public class CategoriaProduto implements Serializable {
 
     @Column(unique = true) //Valor único para a coluna, como se fosse um ID
     @Size(max = 25, message = "NOME - No máximo 25 caracteres") //Tamanho máximo, 25 caracteres
-    @NotBlank //Não pode ser vazio ou nulo
+    @NotBlank(message = "NOME - Não pode ser vazio") //Não pode ser vazio ou nulo
     private String nome_categoria;
 
     @JsonIgnore //Essa informação será ignorada nas solicitações

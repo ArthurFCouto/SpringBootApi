@@ -12,17 +12,17 @@ import java.util.List;
 
 public class UsuarioModel {
 
-    @Size(max = 42, message = "NOME - Máximo 42 caracteres")
+    @Size(max = 45, message = "NOME - Máximo 45 caracteres")
     @NotBlank(message = "NOME - Não pode ser vazio")
     private String nome_usuario;
 
-    @Email(message = "Digite um E-mail válido")
-    @Size(max = 60, message = "E-MAIL - Máximo 60 caracteres")
+    @Email(message = "E-MAIL - Digite um E-mail válido")
+    @Size(max = 45, message = "E-MAIL - Máximo 45 caracteres")
     @NotBlank(message = "E-MAIL - Não pode ser vazio")
     private String email_usuario;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
-    @Past(message = "ANIVERSÁRIO - Deve ser no passado")
+    @Past(message = "ANIVERSÁRIO - Deve ser anterior a hoje")
     private LocalDate aniversario_usuario;
 
     @DecimalMin(value = "10000000000", inclusive = false, message = "TELEFONE - Informe o DDD e o telefone (Somente numeros)")

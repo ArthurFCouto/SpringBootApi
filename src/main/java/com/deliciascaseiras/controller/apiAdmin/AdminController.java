@@ -66,7 +66,7 @@ public class AdminController {
     }*/
 
     @RequestMapping(value = "/403", method = RequestMethod.GET)
-    @ApiOperation(value = "Retorna uma mensagem personalizada para a falta de autorização de acessoa  página.")
+    @ApiOperation(value = "Retorna uma mensagem personalizada para a falta de autorização.")
     public ResponseEntity<?> notAuthorized() {
         comumUtilService.forbiddenException();
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
@@ -85,7 +85,7 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/api/admin/quantidadeusuarios", method = RequestMethod.GET)
-    @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
+    @ApiOperation(value="Retorna a quantidade de usuários cadastrados")
     public ResponseEntity<?> lengthUsers() {
         return new ResponseEntity<>(usuarioService.findAll().toArray().length, HttpStatus.OK);
     }

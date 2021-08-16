@@ -35,7 +35,7 @@ public class UsuarioAuth {
     ComumUtilService comumUtilService;
 
     @GetMapping
-    @ApiOperation(value="Retorna uma lista com todos os usuarios")
+    @ApiOperation(value="Retorna uma lista com todos os usuários")
     public ResponseEntity<?> findAll() {
         List<Usuario> usuarios = usuarioService.findAll();
         if (usuarios.toArray().length == 1) //Se tiver apenas um usuário cadastrado, ele será o apiAuth@apiAuth porque não é possível excluí-lo
@@ -45,7 +45,7 @@ public class UsuarioAuth {
     }
 
     @GetMapping(path = "{id}")
-    @ApiOperation(value="Retorna um usuario unico com o ID informado")
+    @ApiOperation(value="Retorna um usuário unico com o ID informado")
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
         comumUtilService.verifyIfUsuarioExists(id);
         if(usuarioService.findById(id).getEmail_usuario().equals(AppUtil.emailAdmin())) //Se o ID informado for o apiAuth@apiAuth
@@ -54,7 +54,7 @@ public class UsuarioAuth {
     }
 
     @GetMapping(path = "buscar")
-    @ApiOperation(value="Retorna uma lista que contem o nome informado")
+    @ApiOperation(value="Retorna uma lista que o nome contém o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Usuario> usuarios = usuarioService.findByName(nome);
         if(usuarios.contains(usuarioService.findByEmail(AppUtil.emailAdmin()))) //Verificamos se o usuario apiAuth@apiAuth está na lista
@@ -65,12 +65,13 @@ public class UsuarioAuth {
     }
 
     @PutMapping(value = "{id}")
-    @ApiOperation(value="Atualiza o usuário com o ID informado (E-mail não pode ser atualizado.)")
+    @ApiOperation(value="Atualiza o usuário com o ID informado")
     public ResponseEntity<?> update(@RequestBody @Valid UsuarioModel usuarioModel,
                                     @PathVariable("id") long id,
                                     UriComponentsBuilder uriBuilder) {
         comumUtilService.verifyIfUsuarioExists(id);
         Usuario usuario = usuarioService.findById(id);
+        usuario.setEmail_usuario(usuarioModel.getEmail_usuario());
         usuario.setNome_usuario(usuarioModel.getNome_usuario());
         usuario.setAniversario_usuario(usuarioModel.getAniversario_usuario());
         usuario.setTelefone_usuario(usuarioModel.getTelefone_usuario());

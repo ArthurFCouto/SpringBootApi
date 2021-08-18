@@ -5,7 +5,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 @ResponseStatus(HttpStatus.NO_CONTENT)
 public class RequestNoContentException extends RuntimeException{
+    public RequestNoContentException() {
+        super();
+    }
     public RequestNoContentException(String message) {
         super(message);
+    }
+    public RequestNoContentException(String message, Throwable throwable) {
+        super(message, throwable);
     }
 }

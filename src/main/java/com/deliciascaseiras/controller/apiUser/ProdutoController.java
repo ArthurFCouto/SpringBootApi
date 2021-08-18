@@ -6,14 +6,17 @@ import com.deliciascaseiras.service.CategoriaProdutoService;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;
 import com.deliciascaseiras.service.UsuarioService;
+import com.deliciascaseiras.util.ComparatorUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @CrossOrigin(origins = "*")
 @RequestMapping("api/user/produto")
@@ -34,18 +37,21 @@ public class ProdutoController {
     ComumUtilService comumUtilService;
 
     @GetMapping
-    @ApiOperation(value="Retorna uma lista com todos os produtos")
-    public ResponseEntity<?> findAll() {
+    @ApiOperation(value="Retorna uma lista com todos os produtos(Nome, preço ou data)")
+    public ResponseEntity<?> findAll(@Param("order") Optional<String> ordem) {
+        String ordenacao = ordem.orElse("default");
         List<Produto> produtos = produtoService.findAll();
-        if(produtos.isEmpty())
-            comumUtilService.noContentException("Sem resultados para exibir.");
+        switch (ordenacao.toLowerCase()) {
+            case "nome" : produtos.sort(new ComparatorUtil.ProdutoNameComparator());
+            case "preco" : produtos.sort(new ComparatorUtil.ProdutoPrecoComparator());
+            case "data" : produtos.sort(new ComparatorUtil.ProdutoDataComparator());
+        }
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")
     @ApiOperation(value="Retorna um produto unico com o id informado")
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
-        comumUtilService.verifyIfProdutoExists(id);
         return new ResponseEntity<>(new ProdutoShow(produtoService.findById(id)), HttpStatus.OK);
     }
 
@@ -53,8 +59,6 @@ public class ProdutoController {
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<Produto> produtos = produtoService.findByName(nome);
-        if(produtos.isEmpty())
-            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
@@ -63,8 +67,6 @@ public class ProdutoController {
     public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria) {
         comumUtilService.verifyIfCategoriaExists(idCategoria);
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
-        if(produtos.isEmpty())
-            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
@@ -73,8 +75,6 @@ public class ProdutoController {
     public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario) {
         comumUtilService.verifyIfUsuarioExists(idUsuario);
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
-        if(produtos.isEmpty())
-            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 }

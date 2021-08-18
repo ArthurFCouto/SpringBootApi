@@ -5,6 +5,7 @@ import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.entity.Usuario;
 
 import javax.persistence.Lob;
+import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -20,6 +21,7 @@ public class ProdutoModel{
     private String sabor_produto;
 
     @Min(value = 1, message = "PREÇO - Não pode ser vazio.")
+    @Max(value = 999, message = "PREÇO - No máximo R$ 999.")
     private float preco_produto;
 
     private boolean disponivel_produto;

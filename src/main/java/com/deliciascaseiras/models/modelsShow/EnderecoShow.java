@@ -1,10 +1,12 @@
 package com.deliciascaseiras.models.modelsShow;
 
 import com.deliciascaseiras.entity.auxEntity.Endereco;
+import lombok.Getter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class EnderecoShow {
     private long id_endereco;
 
@@ -38,41 +40,5 @@ public class EnderecoShow {
 
     public static List<EnderecoShow> converter(List<Endereco> enderecoList) {
         return enderecoList.stream().map(EnderecoShow::new).collect(Collectors.toList());
-    }
-
-    public long getId_endereco() {
-        return id_endereco;
-    }
-
-    public String getLogradouro_endereco() {
-        return logradouro_endereco;
-    }
-
-    public String getNumero_endereco() {
-        return numero_endereco;
-    }
-
-    public String getComplemento_endereco() {
-        return complemento_endereco;
-    }
-
-    public String getCep_endereco() {
-        return cep_endereco;
-    }
-
-    public String getCidade_endereco() {
-        return cidade_endereco;
-    }
-
-    public String getUf_endereco() {
-        return uf_endereco;
-    }
-
-    public String getUsuario_endereco() {
-        return usuario_endereco;
-    }
-
-    public String getNomeUsuario_endereco() {
-        return nomeUsuario_endereco;
     }
 }

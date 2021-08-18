@@ -29,7 +29,7 @@ public class UsuarioModel {
     @Digits(integer=11, fraction=0, message = "TELEFONE - Informe o DDD e o telefone (Somente numeros)")
     private long telefone_usuario;
 
-    @Size(min = 8, message = "SENHA - Mínimo 8 caracteres")
+    @Size(min = 8, max = 12, message = "SENHA - Entre 8 e 12 caracteres")
     @NotBlank(message = "SENHA - Não pode ser vazio")
     private String senha_usuario;
 

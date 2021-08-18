@@ -57,7 +57,7 @@ public class ComumUtilServiceImpl implements ComumUtilService {
 
     @Override
     public void badRequestException(String message){
-        throw new BadRequestException(message);
+        throw  new BadRequestException(message);
     }
 
     @Override

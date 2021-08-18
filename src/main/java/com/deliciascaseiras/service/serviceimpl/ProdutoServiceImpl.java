@@ -17,10 +17,15 @@ import java.util.stream.Collectors;
 public class ProdutoServiceImpl implements ProdutoService {
 
     @Autowired
+    ComumUtilServiceImpl comumUtilService;
+
+    @Autowired
     ProdutoRepository produtoRepository;
 
     @Override
     public List<Produto> findAll() {
+        if(produtoRepository.findAll().isEmpty())
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return produtoRepository.findAll();
     }
 
@@ -31,11 +36,14 @@ public class ProdutoServiceImpl implements ProdutoService {
         //Com o predicate criamos a condição para o filtro da lista
         Predicate<Produto> filterProdutoList = produto -> AppUtil.stringCompareList(produto.getNome_produto(), tagProdutos);
         List<Produto> produtosReturn = todosProdutos.stream().filter(filterProdutoList).collect(Collectors.toList());
+        if(produtosReturn.isEmpty())
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return produtosReturn;
     }
 
     @Override
     public Produto findById(long id) {
+        comumUtilService.verifyIfProdutoExists(id);
         return produtoRepository.findById(id).get();
     }
 
@@ -46,6 +54,8 @@ public class ProdutoServiceImpl implements ProdutoService {
         //Depois filtramos de acordo com nossas condições
         //Depois criamos uma nova coleção com os produtos filtrados.
         List<Produto> produtosReturn = allProdutos.stream().filter(produto -> produto.getUsuario_produto().equals(usuario)).collect(Collectors.toList());
+        if(produtosReturn.isEmpty())
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return produtosReturn;
     }
 
@@ -67,6 +77,8 @@ public class ProdutoServiceImpl implements ProdutoService {
             if (produto.getCategoria_produto().equals(category))
                 produtosReturn.add(produto);
         }*/
+        if(produtosReturn.isEmpty())
+            comumUtilService.noContentException("Sem resultados para exibir.");
         return produtosReturn;
     }
 }

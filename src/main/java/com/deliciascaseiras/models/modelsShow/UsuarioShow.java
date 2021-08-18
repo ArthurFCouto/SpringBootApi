@@ -3,6 +3,7 @@ package com.deliciascaseiras.models.modelsShow;
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.entity.auxEntity.Endereco;
+import lombok.Getter;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
+@Getter
 public class UsuarioShow {
 
     private long id_usuario;
@@ -44,37 +46,5 @@ public class UsuarioShow {
 
     public static List<UsuarioShow> converter(List<Usuario> usuarioList) {
         return usuarioList.stream().map(UsuarioShow::new).collect(Collectors.toList());
-    }
-
-    public long getId_usuario() {
-        return id_usuario;
-    }
-
-    public String getNome_usuario() {
-        return nome_usuario;
-    }
-
-    public String getEmail_usuario() {
-        return email_usuario;
-    }
-
-    public LocalDate getAniversario_usuario() {
-        return aniversario_usuario;
-    }
-
-    public LocalDate getData_usuario() {
-        return data_usuario;
-    }
-
-    public LocalDate getDataatualizacao_usuario() {
-        return dataatualizacao_usuario;
-    }
-
-    public String getProdutoList() {
-        return produtoList;
-    }
-
-    public List<String> getRoles() {
-        return roles;
     }
 }

@@ -28,15 +28,12 @@ public class CategoriaProdutoController {
     @ApiOperation(value="Retorna uma lista com todas as categorias")
     public ResponseEntity<?> findAll() {
         List<CategoriaProduto> categoriaProdutos = categoriaProdutoService.findAll();
-        if(categoriaProdutos.toArray().length==0)
-            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
     }
 
     @GetMapping(path = "{id}")
     @ApiOperation(value="Retorna uma categoria unica com o ID informado")
     public ResponseEntity<?> findById(@PathVariable("id") long id) {
-        comumUtilService.verifyIfCategoriaExists(id);
         return new ResponseEntity<>(categoriaProdutoService.findById(id), HttpStatus.OK);
     }
 
@@ -44,8 +41,6 @@ public class CategoriaProdutoController {
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
     public ResponseEntity<?> findByName(@RequestParam String nome) {
         List<CategoriaProduto> categoriaProdutos = categoriaProdutoService.findByName(nome);
-        if(categoriaProdutos.toArray().length==0)
-            comumUtilService.noContentException("Sem resultados para exibir.");
         return new ResponseEntity<>(categoriaProdutos, HttpStatus.OK);
     }
 }

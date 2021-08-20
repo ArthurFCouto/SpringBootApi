@@ -2,7 +2,6 @@ package com.deliciascaseiras.error.handler;
 
 import com.deliciascaseiras.error.BadRequestException;
 import com.deliciascaseiras.error.ForbiddenException;
-import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
 import com.deliciascaseiras.error.details.ApiErrorDetails;
 import com.deliciascaseiras.error.details.ApiErrorValidation;
@@ -25,13 +24,6 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler { //Com
             ResourceNotFoundException rnfException) {
         ApiErrorDetails apiErrorDetails = new ApiErrorDetails(HttpStatus.NOT_FOUND, "Resource not found", rnfException.getClass().getName(), rnfException.getMessage());
         return new ResponseEntity<>(apiErrorDetails, HttpStatus.NOT_FOUND);
-    }
-
-    @ExceptionHandler(RequestNoContentException.class)
-    protected ResponseEntity<Object> handleRequestAcceptedException(
-            RequestNoContentException rncException) {
-        ApiErrorDetails apiErrorDetails = new ApiErrorDetails(HttpStatus.NO_CONTENT, "No content", rncException.getClass().getName(), rncException.getMessage());
-        return new ResponseEntity<>(apiErrorDetails, HttpStatus.NO_CONTENT);
     }
 
     @ExceptionHandler(ForbiddenException.class)

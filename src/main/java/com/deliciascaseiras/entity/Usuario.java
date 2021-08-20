@@ -3,6 +3,7 @@ package com.deliciascaseiras.entity;
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.entity.auxEntity.Endereco;
 import com.deliciascaseiras.util.AppUtil;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -40,16 +41,15 @@ public class Usuario implements Serializable, UserDetails {
 
     private LocalDate data_usuario;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataatualizacao_usuario;
 
     @JsonIgnore
     @OneToMany(mappedBy = "usuario_produto")
     private List<Produto> produtoList;
 
-    //@OneToMany(mappedBy = "usuario_endereco")
-    @OneToOne
-    //private List<Endereco> enderecoList;
-    private Endereco enderecoList;
+    @OneToMany(mappedBy = "usuario_endereco")
+    private List<Endereco> enderecoList;
 
     @JsonIgnore
     @ManyToMany
@@ -65,7 +65,7 @@ public class Usuario implements Serializable, UserDetails {
     }
 
     public Usuario(String email_usuario, String nome_usuario, LocalDate data_usuario, String senha_usuario, List<Role> roles) {
-        setEmail_usuario(email_usuario);
+        setEmail_usuario(email_usuario.toLowerCase());
         setNome_usuario(nome_usuario);
         setAniversario_usuario(data_usuario);
         setTelefone_usuario(Long.parseLong("12345678901"));
@@ -76,7 +76,7 @@ public class Usuario implements Serializable, UserDetails {
     }
 
     public Usuario(String email_usuario, String nome_usuario, LocalDate aniversario_usuario, long telefone_usuario, String senha_usuario, List<Role> roles) {
-        this.email_usuario = email_usuario;
+        this.email_usuario = email_usuario.toLowerCase();
         this.nome_usuario = nome_usuario;
         this.aniversario_usuario = aniversario_usuario;
         this.telefone_usuario = telefone_usuario;
@@ -171,11 +171,11 @@ public class Usuario implements Serializable, UserDetails {
         this.produtoList = produtoList;
     }
 
-    public Endereco getEnderecoList() {
+    public List<Endereco> getEnderecoList() {
         return enderecoList;
     }
 
-    public void setEnderecoList(Endereco enderecoList) {
+    public void setEnderecoList(List<Endereco> enderecoList) {
         this.enderecoList = enderecoList;
     }
 

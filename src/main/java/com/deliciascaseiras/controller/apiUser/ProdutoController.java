@@ -3,7 +3,6 @@ package com.deliciascaseiras.controller.apiUser;
 import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.models.modelsShow.ProdutoShow;
 import com.deliciascaseiras.service.CategoriaProdutoService;
-import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.ProdutoService;
 import com.deliciascaseiras.service.UsuarioService;
 import com.deliciascaseiras.util.ComparatorUtil;
@@ -32,9 +31,6 @@ public class ProdutoController {
 
     @Autowired
     UsuarioService usuarioService;
-
-    @Autowired
-    ComumUtilService comumUtilService;
 
     @GetMapping
     @ApiOperation(value="Retorna uma lista com todos os produtos(Nome, preço ou data)")
@@ -65,7 +61,6 @@ public class ProdutoController {
     @GetMapping(path = "categoria/{idCategoria}")
     @ApiOperation(value="Retorna uma lista que contem a categoria(id) informada")
     public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria) {
-        comumUtilService.verifyIfCategoriaExists(idCategoria);
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
@@ -73,7 +68,6 @@ public class ProdutoController {
     @GetMapping(path = "usuario/{idUsuario}")
     @ApiOperation(value="Retorna uma lista que contem os produtos do usuario(id) informado.")
     public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario) {
-        comumUtilService.verifyIfUsuarioExists(idUsuario);
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }

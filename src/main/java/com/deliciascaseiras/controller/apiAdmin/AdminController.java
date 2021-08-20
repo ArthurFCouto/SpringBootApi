@@ -1,16 +1,21 @@
 package com.deliciascaseiras.controller.apiAdmin;
 
+import com.deliciascaseiras.entity.Usuario;
+import com.deliciascaseiras.entity.auxEntity.Endereco;
+import com.deliciascaseiras.models.modelsShow.EnderecoShow;
 import com.deliciascaseiras.repository.RoleRepository;
 import com.deliciascaseiras.service.ComumUtilService;
+import com.deliciascaseiras.service.EnderecoService;
 import com.deliciascaseiras.service.ProdutoService;
 import com.deliciascaseiras.service.UsuarioService;
-import com.deliciascaseiras.util.AppUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @CrossOrigin(origins = "*")
 @RestController
@@ -19,6 +24,9 @@ public class AdminController {
 
     @Autowired
     RoleRepository roleRepository;
+
+    @Autowired
+    EnderecoService enderecoService;
 
     @Autowired
     UsuarioService usuarioService;
@@ -72,6 +80,13 @@ public class AdminController {
         return new ResponseEntity<>(HttpStatus.FORBIDDEN);
     }
 
+    @RequestMapping(value = "/api/admin/endereco", method = RequestMethod.GET)
+    @ApiOperation(value = "Retorna uma lista com todos os endereços cadastrados")
+    public ResponseEntity<?> findAll() {
+        List<Endereco> enderecoList = enderecoService.findAll();
+        return new ResponseEntity<>(EnderecoShow.converter(enderecoList), HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/api/admin/roles", method = RequestMethod.GET)
     @ApiOperation(value = "Retorna a lista de autorizações(roles) cadastradas")
     public ResponseEntity<?> returnRoles() {
@@ -79,32 +94,26 @@ public class AdminController {
     }
 
     @RequestMapping(value = "/api/admin/quantidadeproduto", method = RequestMethod.GET)
-    @ApiOperation(value="Retorna a quantidade de produtos cadastrados")
+    @ApiOperation(value = "Retorna a quantidade de produtos cadastrados")
     public ResponseEntity<?> lengthProducts() {
         return new ResponseEntity<>(produtoService.findAll().toArray().length, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/admin/quantidadeusuarios", method = RequestMethod.GET)
-    @ApiOperation(value="Retorna a quantidade de usuários cadastrados")
+    @ApiOperation(value = "Retorna a quantidade de usuários cadastrados")
     public ResponseEntity<?> lengthUsers() {
         return new ResponseEntity<>(usuarioService.findAll().toArray().length, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/admin/usuario/delete/{id}", method = RequestMethod.DELETE)
-    @ApiOperation(value="Deleta o usuário com o ID informado")
+    @ApiOperation(value = "Deleta o usuário com o ID informado")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        comumUtilService.verifyIfUsuarioExists(id);
-        if (usuarioService.findById(id).getEmail_usuario().equals(AppUtil.userDetailUsername()))
-            comumUtilService.badRequestException("Faça esta solicitação a outro ADMIN.");
-        if (usuarioService.findById(id).getEmail_usuario().equals("admin@admin.com"))
-            comumUtilService.badRequestException("Não é possível excluir este usuário.");
-        if (usuarioService.produtoIsPresent(id))
-            comumUtilService.badRequestException("Usuário com produtos cadastrados.");
+        Usuario usuario = usuarioService.findById(id);
         try {
-            usuarioService.delete(usuarioService.findById(id));
+            usuarioService.delete(usuario);
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro ao excluir usuário.\nDetails: "+exception);
+            comumUtilService.badRequestException("Erro ao excluir usuário." + exception.getMessage());
         }
-        return new ResponseEntity<>("Usuário deletado!",HttpStatus.OK);
+        return new ResponseEntity<>("Usuário deletado!", HttpStatus.OK);
     }
 }

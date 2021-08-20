@@ -6,6 +6,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+//Classe com métodos úteis e compartilhados
 public class AppUtil {
 
     //Método para transformar uma frase em lista de palavras com mais de duas letras
@@ -80,7 +81,7 @@ public class AppUtil {
     }
 
     public static String emailAdmin() {
-        return "admin@admin.com";
+        return "admin@admin.com".toLowerCase();
     }
 
     //Método para efetuar a validação manual da categoria

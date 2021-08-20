@@ -20,7 +20,6 @@ import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
 import java.net.URI;
-import java.time.LocalDate;
 
 @CrossOrigin(origins = "*")
 @RequestMapping(value = "api/auth/produto")
@@ -45,14 +44,9 @@ public class ProdutoAuth {
     public ResponseEntity<?> save(@RequestBody @Valid ProdutoModel produtoModel,
                                   @RequestParam long idCategoria,
                                   UriComponentsBuilder uriBuilder) {
-        comumUtilService.verifyIfCategoriaExists(idCategoria);
-        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
-        if(usuarioService.verifyIsAdmin(usuarioLogado))
-            comumUtilService.badRequestException("Não foi possível cadastrar o produto (Não autorizado para o perfil do usuário).");
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
-        Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto);
-        produto.setData_produto(LocalDate.now());
-        produto.setDataatualizacao_produto(LocalDate.now());
+        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
+        Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto, usuarioService, comumUtilService);
         produtoService.save(produto);
         URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoShow(produto));
@@ -64,16 +58,9 @@ public class ProdutoAuth {
                                     @RequestParam long idCategoria,
                                     @PathVariable("id") long idProduto,
                                     UriComponentsBuilder uriBuilder) {
-        comumUtilService.verifyIfProdutoExists(idProduto);
-        comumUtilService.verifyIfCategoriaExists(idCategoria);
-        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
-        if (produtoService.findById(idProduto).getUsuario_produto() != usuarioLogado)
-            comumUtilService.badRequestException("Não foi possível atualizar o produto (Pertence a outro usuário).");
         CategoriaProduto categoriaProduto = categoriaProdutoService.findById(idCategoria);
-        Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto);
-        produto.setId_produto(idProduto);
-        produto.setData_produto(produtoService.findById(idProduto).getData_produto());
-        produto.setDataatualizacao_produto(LocalDate.now());
+        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
+        Produto produto = produtoModel.update(produtoService.findById(idProduto), usuarioLogado, categoriaProduto, comumUtilService);
         produtoService.save(produto);
         URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoShow(produto));
@@ -82,11 +69,6 @@ public class ProdutoAuth {
     @DeleteMapping(path = "{id}")
     @ApiOperation(value="Deleta um produto com o id informado")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        comumUtilService.verifyIfProdutoExists(id);
-        Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
-        if (produtoService.findById(id).getUsuario_produto() != usuarioLogado) //Verificamos se o usuário do produto é igual ao usuário logado
-            if(!usuarioService.verifyIsAdmin(usuarioLogado)) //Se não for, verificamos se é o usuário apiAuth
-                comumUtilService.badRequestException("Não foi possível excluir o produto (Pertence a outro usuário)."); //Se não for, não permitimos deletar
         produtoService.delete(produtoService.findById(id));
         return new ResponseEntity<>("Produto excluido.", HttpStatus.OK);
     }

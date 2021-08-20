@@ -19,6 +19,8 @@ public class Endereco implements Serializable {
 
     private String numero_endereco;
 
+    private String bairro_endereco;
+
     private String complemento_endereco;
 
     private String cep_endereco;
@@ -28,22 +30,22 @@ public class Endereco implements Serializable {
     private String uf_endereco;
 
     @JsonIgnore
-    /*@ManyToOne
+    @ManyToOne
     @JoinTable(
             name = "endereco_usuario",
             joinColumns = @JoinColumn(
                     name = "endereco_id", referencedColumnName = "id_endereco"),
             inverseJoinColumns = @JoinColumn(
-                    name = "usuario_id", referencedColumnName = "id_usuario"))*/
-    @OneToOne
+                    name = "usuario_id", referencedColumnName = "id_usuario"))
     private Usuario usuario_endereco;
 
     public Endereco() {
     }
 
-    public Endereco(String logradouro_endereco, String numero_endereco, String complemento_endereco, String cep_endereco, String cidade_endereco, String uf_endereco, Usuario usuario_endereco) {
+    public Endereco(String logradouro_endereco, String numero_endereco, String bairro_endereco, String complemento_endereco, String cep_endereco, String cidade_endereco, String uf_endereco, Usuario usuario_endereco) {
         this.logradouro_endereco = logradouro_endereco;
         this.numero_endereco = numero_endereco;
+        this.bairro_endereco = bairro_endereco;
         this.complemento_endereco = complemento_endereco;
         this.cep_endereco = cep_endereco;
         this.cidade_endereco = cidade_endereco;
@@ -73,6 +75,14 @@ public class Endereco implements Serializable {
 
     public void setNumero_endereco(String numero_endereco) {
         this.numero_endereco = numero_endereco;
+    }
+
+    public String getBairro_endereco() {
+        return bairro_endereco;
+    }
+
+    public void setBairro_endereco(String bairro_endereco) {
+        this.bairro_endereco = bairro_endereco;
     }
 
     public String getComplemento_endereco() {

@@ -3,19 +3,29 @@ package com.deliciascaseiras.models;
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.repository.RoleRepository;
+import com.deliciascaseiras.service.ComumUtilService;
+import com.deliciascaseiras.service.UsuarioService;
+import com.deliciascaseiras.util.AppUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Getter;
+import lombok.Setter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+import javax.persistence.Column;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Getter
+@Setter
 public class UsuarioModel {
 
     @Size(max = 45, message = "NOME - Máximo 45 caracteres")
     @NotBlank(message = "NOME - Não pode ser vazio")
     private String nome_usuario;
 
+    @Column(unique = true)
     @Email(message = "E-MAIL - Digite um E-mail válido")
     @Size(max = 45, message = "E-MAIL - Máximo 45 caracteres")
     @NotBlank(message = "E-MAIL - Não pode ser vazio")
@@ -33,49 +43,32 @@ public class UsuarioModel {
     @NotBlank(message = "SENHA - Não pode ser vazio")
     private String senha_usuario;
 
-    public Usuario converter(RoleRepository roleRepository) {
+    public Usuario converter(ComumUtilService comumUtilService, RoleRepository roleRepository, UsuarioService usuarioService) {
+        if (getEmail_usuario().toLowerCase().contains(AppUtil.emailAdmin()))
+            comumUtilService.badRequestException("Informe um e-mail válido.");
+        if (usuarioService.emailIsPresent(getEmail_usuario()))
+            comumUtilService.badRequestException("Email já cadastrado! Informe outro e-mail.");
         List<Role> roles = new ArrayList<>();
         roles.add(roleRepository.findById("ROLE_USER").get());
-        return new Usuario(email_usuario, nome_usuario, aniversario_usuario, telefone_usuario, senha_usuario, roles);
+        Usuario usuario = new Usuario(email_usuario, nome_usuario, aniversario_usuario, telefone_usuario, senha_usuario, roles);
+        usuario.setData_usuario(LocalDate.now());
+        usuario.setDataatualizacao_usuario(LocalDate.now());
+        return usuario;
     }
 
-    public String getNome_usuario() {
-        return nome_usuario;
-    }
-
-    public void setNome_usuario(String nome_usuario) {
-        this.nome_usuario = nome_usuario;
-    }
-
-    public String getEmail_usuario() {
-        return email_usuario;
-    }
-
-    public void setEmail_usuario(String email_usuario) {
-        this.email_usuario = email_usuario;
-    }
-
-    public LocalDate getAniversario_usuario() {
-        return aniversario_usuario;
-    }
-
-    public void setAniversario_usuario(LocalDate aniversario_usuario) {
-        this.aniversario_usuario = aniversario_usuario;
-    }
-
-    public long getTelefone_usuario() {
-        return telefone_usuario;
-    }
-
-    public void setTelefone_usuario(long telefone_usuario) {
-        this.telefone_usuario = telefone_usuario;
-    }
-
-    public String getSenha_usuario() {
-        return senha_usuario;
-    }
-
-    public void setSenha_usuario(String senha_usuario) {
-        this.senha_usuario = senha_usuario;
+    public Usuario update(Usuario usuario, UsuarioService usuarioService, ComumUtilService comumUtilService) {
+        if(!usuario.getEmail_usuario().equals(getEmail_usuario())) { //Se o usuário estiver atualizando o e-mail fazemos essa verificação, se o e-mail for o mesmo não
+            if (getEmail_usuario().toLowerCase().contains(AppUtil.emailAdmin()))
+                comumUtilService.badRequestException("Informe um e-mail válido.");
+            if (usuarioService.emailIsPresent(getEmail_usuario()))
+                comumUtilService.badRequestException("Email já cadastrado! Informe outro e-mail.");
+        }
+        usuario.setEmail_usuario(getEmail_usuario());
+        usuario.setNome_usuario(getNome_usuario());
+        usuario.setAniversario_usuario(getAniversario_usuario());
+        usuario.setTelefone_usuario(getTelefone_usuario());
+        usuario.setSenha_usuario(new BCryptPasswordEncoder().encode(usuario.getSenha_usuario()));
+        usuario.setDataatualizacao_usuario(LocalDate.now());
+        return usuario;
     }
 }

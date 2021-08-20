@@ -30,7 +30,7 @@ public class CategoriaProdutoAdmin {
         try {
             categoriaProdutoService.save(categoria);
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro durante o cadastro. Details: "+exception);
+            comumUtilService.badRequestException("Erro durante o cadastro. "+exception.getMessage());
         }
         return new ResponseEntity<>("Categoria cadastrada.", HttpStatus.OK);
     }
@@ -44,7 +44,7 @@ public class CategoriaProdutoAdmin {
         try {
             categoriaProdutoService.save(categoria);
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro durante a atualização. Details: "+exception);
+            comumUtilService.badRequestException("Erro durante a atualização. "+exception.getMessage());
         }
         return new ResponseEntity<>("Categoria atualizada.", HttpStatus.OK);
     }
@@ -52,12 +52,10 @@ public class CategoriaProdutoAdmin {
     @DeleteMapping(path = "{id}")
     @ApiOperation(value="Deleta a categoria com o ID informado")
     public ResponseEntity<?> delete(@PathVariable("id") long id) {
-        comumUtilService.verifyIfCategoriaExists(id);
-        comumUtilService.verifyIfBeingUsedCategory(id);
         try {
             categoriaProdutoService.delete(categoriaProdutoService.findById(id));
         } catch (Exception exception) {
-            comumUtilService.badRequestException("Erro ao deletar categoria. Details: "+exception);
+            comumUtilService.badRequestException("Erro ao deletar categoria. "+exception.getMessage());
         }
         return new ResponseEntity<>("Categoria deletada.", HttpStatus.OK);
     }
@@ -66,6 +64,5 @@ public class CategoriaProdutoAdmin {
     @ApiOperation(value="Retorna a quantidade de categorias cadastradas")
     public ResponseEntity<?> length() {
         return new ResponseEntity<>(categoriaProdutoService.findAll().size(), HttpStatus.OK);
-        //return new ResponseEntity<>(categoriaProdutoService.findAll().toArray().length, HttpStatus.OK);
     }
 }

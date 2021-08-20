@@ -8,7 +8,7 @@ public class ComparatorUtil {
     public static class ProdutoNameComparator implements Comparator<Produto> {
         @Override
         public int compare(Produto produto, Produto produto2) {
-            return produto.getNome_produto().compareToIgnoreCase(produto2.getNome_produto());
+            return produto.getNome_produto().toLowerCase().compareToIgnoreCase(produto2.getNome_produto().toLowerCase());
         }
     }
 

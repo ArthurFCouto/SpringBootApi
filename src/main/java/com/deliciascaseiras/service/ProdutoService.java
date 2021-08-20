@@ -18,6 +18,8 @@ public interface ProdutoService {
     Produto findById(long id);
     //Buscar produtos pelo usuario
     List<Produto> findByUsuario(Usuario usuario);
+    //Verifica se existe produtos para o usuário
+    boolean productIsPresentUser(Usuario usuario);
     //Salvar um produto
     void save(Produto produto);
     //Deletar um produto

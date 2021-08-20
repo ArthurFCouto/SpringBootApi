@@ -34,7 +34,7 @@ public class EnderecoShow {
         this.complemento_endereco = endereco.getComplemento_endereco();
         this.cidade_endereco = endereco.getCidade_endereco();
         this.uf_endereco = endereco.getUf_endereco();
-        this.usuario_endereco = "api/auth/usuario"+endereco.getUsuario_endereco().getId_usuario();
+        this.usuario_endereco = ""+endereco.getUsuario_endereco().getId_usuario();
         this.nomeUsuario_endereco = endereco.getUsuario_endereco().getNome_usuario();
     }
 

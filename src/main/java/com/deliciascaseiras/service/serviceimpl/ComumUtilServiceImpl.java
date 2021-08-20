@@ -3,7 +3,6 @@ package com.deliciascaseiras.service.serviceimpl;
 import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.error.BadRequestException;
 import com.deliciascaseiras.error.ForbiddenException;
-import com.deliciascaseiras.error.RequestNoContentException;
 import com.deliciascaseiras.error.ResourceNotFoundException;
 import com.deliciascaseiras.repository.CategoriaProdutoRepository;
 import com.deliciascaseiras.repository.ProdutoRepository;
@@ -37,22 +36,20 @@ public class ComumUtilServiceImpl implements ComumUtilService {
     @Override
     public void verifyIfProdutoExists(Long id){
         if(!produtoRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Não existe o produto com a ID: " + id); //Chama a classe de erro customizada
-            //Se chamar a classe de erro já encerra o método automáticamente
+            throw new ResourceNotFoundException("Não existe o produto com a ID: " + id);
         }
     }
 
     @Override
     public void verifyIfUsuarioExists(Long id){
         if(!usuarioRepository.existsById(id)) {
-            throw new ResourceNotFoundException("Não existe o usuário com a ID: " + id); //Chama a classe de erro customizada
-            //Se chamar a classe de erro já encerra o método automáticamente
+            throw new ResourceNotFoundException("Não existe o usuário com a ID: " + id);
         }
     }
 
     @Override
-    public void noContentException(String message){
-        throw new RequestNoContentException(message);
+    public void resourceNotFoundException(String message){
+        throw new ResourceNotFoundException(message);
     }
 
     @Override
@@ -67,10 +64,12 @@ public class ComumUtilServiceImpl implements ComumUtilService {
 
     @Override
     public void verifyIfBeingUsedCategory(Long id) {
-        List<Produto> produtoList = produtoRepository.findAll();
-        for(Produto produto : produtoList) {
-            if(produto.getCategoria_produto().getId_categoria() == id)
-                throw new BadRequestException("Categoria em uso.");
+        List<Produto> produtoList = produtoRepository.findAll(); //Criamos um lista com todos os produtos
+        if (!produtoList.isEmpty()) { //Verificamos se a lista está vazia
+            for(Produto produto : produtoList) { //Percorremos a lista
+                if(produto.getCategoria_produto().getId_categoria() == id) //Verificamos se a ID da categoria do produto é igual a ID informada
+                    throw new BadRequestException("Categoria em uso."); //Se for, laçamos uma exceção
+            }
         }
     }
 }

@@ -10,6 +10,7 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import java.net.URI;
 import java.net.URISyntaxException;
 
+//Classe de configuração do banco de dados postgresSql no heroku
 @Configuration
 public class DataBaseConfig {
 

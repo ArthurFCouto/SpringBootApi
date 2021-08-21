@@ -31,26 +31,6 @@ public class UsuarioAuth {
     @Autowired
     ComumUtilService comumUtilService;
 
-    @GetMapping
-    @ApiOperation(value="Retorna uma lista com todos* os usuários")
-    public ResponseEntity<?> findAllNoAdmin() {
-        List<Usuario> usuarios = usuarioService.findAllNoAdmin();
-        return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "{id}")
-    @ApiOperation(value="Retorna um usuário unico com o ID informado")
-    public ResponseEntity<?> findById(@PathVariable("id") long id) {
-        return new ResponseEntity<>(new UsuarioShow(usuarioService.findById(id)), HttpStatus.OK);
-    }
-
-    @GetMapping(path = "buscar")
-    @ApiOperation(value="Retorna uma lista que o nome contém o nome informado")
-    public ResponseEntity<?> findByName(@RequestParam String nome) {
-        List<Usuario> usuarios = usuarioService.findByName(nome);
-        return new ResponseEntity<>(UsuarioShow.converter(usuarios), HttpStatus.OK);
-    }
-
     @PutMapping(value = "{id}")
     @ApiOperation(value="Atualiza o usuário com o ID informado")
     public ResponseEntity<?> update(@RequestBody @Valid UsuarioModel usuarioModel,

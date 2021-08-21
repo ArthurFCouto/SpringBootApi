@@ -17,26 +17,26 @@ public class ProdutoModel{
 
     @Size(max = 25, message = "NOME - No máximo 25 caracteres")
     @NotBlank(message = "NOME - Não pode ser vazio")
-    private String nome_produto;
+    private String nome;
 
     @Size(max = 25, message = "SABOR - No máximo 25 caracteres")
     @NotBlank(message = "SABOR - Não pode ser vazio")
-    private String sabor_produto;
+    private String sabor;
 
     @Min(value = 1, message = "PREÇO - Não pode ser vazio.")
     @Max(value = 999, message = "PREÇO - No máximo R$ 999.")
-    private float preco_produto;
+    private float preco;
 
-    private boolean disponivel_produto;
+    private boolean disponivel;
 
     @Lob
     @Size(max = 120, message = "DETALHES - Máximo 120 caracteres.")
-    private String detalhe_produto;
+    private String detalhe;
 
     public Produto converter(Usuario usuario, CategoriaProduto categoriaProduto, UsuarioService usuarioService, ComumUtilService comumUtilService) {
         if(usuarioService.verifyIsAdmin(usuario))
             comumUtilService.badRequestException("Não foi possível cadastrar o produto (Não autorizado para o perfil do usuário).");
-        Produto produto = new Produto(nome_produto, sabor_produto, categoriaProduto, preco_produto, disponivel_produto, detalhe_produto, usuario);
+        Produto produto = new Produto(nome, sabor, categoriaProduto, preco, disponivel, detalhe, usuario);
         produto.setData_produto(LocalDate.now());
         produto.setDataatualizacao_produto(LocalDate.now());
         return produto;
@@ -45,53 +45,53 @@ public class ProdutoModel{
     public Produto update(Produto produto, Usuario usuario, CategoriaProduto categoriaProduto, ComumUtilService comumUtilService) {
         if (produto.getUsuario_produto() != usuario)
             comumUtilService.badRequestException("Não foi possível atualizar o produto (Pertence a outro usuário).");
-        produto.setDetalhe_produto(getDetalhe_produto());
-        produto.setNome_produto(getNome_produto());
-        produto.setPreco_produto(getPreco_produto());
-        produto.setSabor_produto(getSabor_produto());
+        produto.setDetalhe_produto(getDetalhe());
+        produto.setNome_produto(getNome());
+        produto.setPreco_produto(getPreco());
+        produto.setSabor_produto(getSabor());
         produto.setCategoria_produto(categoriaProduto);
-        produto.setDisponivel_produto(isDisponivel_produto());
+        produto.setDisponivel_produto(isDisponivel());
         produto.setDataatualizacao_produto(LocalDate.now());
         return produto;
     }
 
-    public String getNome_produto() {
-        return nome_produto;
+    public String getNome() {
+        return nome;
     }
 
-    public void setNome_produto(String nome_produto) {
-        this.nome_produto = nome_produto;
+    public void setNome(String nome) {
+        this.nome = nome;
     }
 
-    public String getSabor_produto() {
-        return sabor_produto;
+    public String getSabor() {
+        return sabor;
     }
 
-    public void setSabor_produto(String sabor_produto) {
-        this.sabor_produto = sabor_produto;
+    public void setSabor(String sabor) {
+        this.sabor = sabor;
     }
 
-    public float getPreco_produto() {
-        return preco_produto;
+    public float getPreco() {
+        return preco;
     }
 
-    public void setPreco_produto(float preco_produto) {
-        this.preco_produto = preco_produto;
+    public void setPreco(float preco) {
+        this.preco = preco;
     }
 
-    public boolean isDisponivel_produto() {
-        return disponivel_produto;
+    public boolean isDisponivel() {
+        return disponivel;
     }
 
-    public void setDisponivel_produto(boolean disponivel_produto) {
-        this.disponivel_produto = disponivel_produto;
+    public void setDisponivel(boolean disponivel) {
+        this.disponivel = disponivel;
     }
 
-    public String getDetalhe_produto() {
-        return detalhe_produto;
+    public String getDetalhe() {
+        return detalhe;
     }
 
-    public void setDetalhe_produto(String detalhe_produto) {
-        this.detalhe_produto = detalhe_produto;
+    public void setDetalhe(String detalhe) {
+        this.detalhe = detalhe;
     }
 }

@@ -18,19 +18,19 @@ public class ProdutoShow{
 
     private float preco_produto;
 
-    private String categoria_produto;
+    private long categoria_produto;
 
-    private String nomeCategoria_produto;
+    private String nomecategoria_produto;
 
     private boolean disponivel_produto;
 
     private String detalhe_produto;
 
-    private LocalDate data_produto;
+    private LocalDate datacriacao_produto;
 
     private LocalDate dataatualizacao_produto;
 
-    private String usuario_produto;
+    private long usuario_produto;
 
     private String nomeUsuario_produto;
 
@@ -39,13 +39,13 @@ public class ProdutoShow{
         this.nome_produto = produto.getNome_produto();
         this.sabor_produto = produto.getSabor_produto();
         this.preco_produto = produto.getPreco_produto();
-        this.categoria_produto = String.valueOf(produto.getCategoria_produto().getId_categoria());
-        this.nomeCategoria_produto = produto.getCategoria_produto().getNome_categoria();
+        this.categoria_produto = produto.getCategoria_produto().getId_categoria();
+        this.nomecategoria_produto = produto.getCategoria_produto().getNome_categoria();
         this.disponivel_produto = produto.isDisponivel_produto();
         this.detalhe_produto = produto.getDetalhe_produto();
-        this.data_produto = produto.getData_produto();
+        this.datacriacao_produto = produto.getData_produto();
         this.dataatualizacao_produto = produto.getDataatualizacao_produto();
-        this.usuario_produto = String.valueOf(produto.getUsuario_produto().getId_usuario());
+        this.usuario_produto = produto.getUsuario_produto().getId_usuario();
         this.nomeUsuario_produto = produto.getUsuario_produto().getNome_usuario();
     }
 

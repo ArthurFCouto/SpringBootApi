@@ -22,9 +22,9 @@ public class EnderecoShow {
 
     private String uf_endereco;
 
-    private String usuario_endereco;
+    private long usuario_endereco;
 
-    private String nomeUsuario_endereco;
+    private String nomeusuario_endereco;
 
     public EnderecoShow(Endereco endereco) {
         this.id_endereco = endereco.getId_endereco();
@@ -34,8 +34,8 @@ public class EnderecoShow {
         this.complemento_endereco = endereco.getComplemento_endereco();
         this.cidade_endereco = endereco.getCidade_endereco();
         this.uf_endereco = endereco.getUf_endereco();
-        this.usuario_endereco = ""+endereco.getUsuario_endereco().getId_usuario();
-        this.nomeUsuario_endereco = endereco.getUsuario_endereco().getNome_usuario();
+        this.usuario_endereco = endereco.getUsuario_endereco().getId_usuario();
+        this.nomeusuario_endereco = endereco.getUsuario_endereco().getNome_usuario();
     }
 
     public static List<EnderecoShow> converter(List<Endereco> enderecoList) {

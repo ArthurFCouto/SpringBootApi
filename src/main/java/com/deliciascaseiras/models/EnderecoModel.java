@@ -3,17 +3,12 @@ package com.deliciascaseiras.models;
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.entity.auxEntity.Endereco;
 import com.deliciascaseiras.service.ComumUtilService;
-import com.deliciascaseiras.service.EnderecoService;
 import com.deliciascaseiras.service.UsuarioService;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
-import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
-import java.io.Serializable;
 
 @Getter
 @Setter

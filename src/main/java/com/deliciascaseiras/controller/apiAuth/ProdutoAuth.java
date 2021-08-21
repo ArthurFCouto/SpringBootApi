@@ -27,6 +27,8 @@ import java.net.URI;
 @Api(value="API REST - Controle de produtos")
 public class ProdutoAuth {
 
+    private final String urlPath = "/api/user/produto/{id}";
+
     @Autowired
     ProdutoService produtoService;
 
@@ -48,7 +50,7 @@ public class ProdutoAuth {
         Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
         Produto produto = produtoModel.converter(usuarioLogado, categoriaProduto, usuarioService, comumUtilService);
         produtoService.save(produto);
-        URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
+        URI uri = uriBuilder.path(urlPath).buildAndExpand(produto.getId_produto()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoShow(produto));
     }
 
@@ -62,7 +64,7 @@ public class ProdutoAuth {
         Usuario usuarioLogado = usuarioService.findByEmail(AppUtil.userDetailUsername());
         Produto produto = produtoModel.update(produtoService.findById(idProduto), usuarioLogado, categoriaProduto, comumUtilService);
         produtoService.save(produto);
-        URI uri = uriBuilder.path("/api/user/produto/{id}").buildAndExpand(produto.getId_produto()).toUri();
+        URI uri = uriBuilder.path(urlPath).buildAndExpand(produto.getId_produto()).toUri();
         return ResponseEntity.created(uri).body(new ProdutoShow(produto));
     }
 

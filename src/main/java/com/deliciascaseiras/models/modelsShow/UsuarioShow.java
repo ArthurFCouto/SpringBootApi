@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+//Esta classe é o objeto que será exibido ao usuário, nela que definimos quais informações queremos mostrar ou não
 @Getter
 public class UsuarioShow {
 

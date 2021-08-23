@@ -14,6 +14,7 @@ import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+//Nesta classe implementamos os métodos da nossa interface, é onde acontece boa parte das regras no projeto
 @Service
 public class ProdutoServiceImpl implements ProdutoService {
 

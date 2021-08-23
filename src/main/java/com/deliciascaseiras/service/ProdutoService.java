@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 
 import java.util.List;
 
+//É recomendável não utilizamos o repository diretamente, pra isso criamos nossa interface de service
 public interface ProdutoService {
     //Buscar todos os produtos
     List<Produto> findAll();

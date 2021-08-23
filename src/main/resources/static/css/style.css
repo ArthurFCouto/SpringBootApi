@@ -1,0 +1,79 @@
+html, body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    margin: 0px;
+    height: 100%;
+    width: 100%;
+    line-height: 1.5;
+}
+.alerta{
+  width: 85%;
+  height: auto;
+  margin: auto;
+  text-align: justify;
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.verm{
+  color: #721c24;
+  background-color: #f8d7da;
+  border: 1px solid #f5c6cb;
+}
+.cardLogin {
+    width: 90%;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    max-width: 400px;
+    padding: 10px;
+    box-shadow: 0 0 8px 4px #eee;
+}
+.cardLoginButton {
+    width: 100%;
+    text-align: right;
+}
+
+.cardLoginButton input {
+    display: inline-block;
+    margin-top: 10px;
+    margin-left: 20px;
+    cursor: pointer;
+    color: #fff;
+    text-shadow: 0 1px 1px #333;
+    background-color: #270024;
+    border: 1px solid transparent;
+    padding: .5rem 1.5rem;
+    font-size: 1rem;
+    border-radius: .25rem;
+}
+.cardLoginDados {
+    width: 100%;
+    margin: 10px 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    text-align: center;
+}
+.cardLoginEntrada {
+    width: 100%;
+    padding: 0;
+    text-align: left;
+    line-height: 1.5rem;
+}
+
+.cardLoginEntrada sup{
+    color: #ff0000;
+}
+.inputDados {
+    margin-bottom: .5rem;
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: .7rem 0rem;
+    font-size: 1rem;
+    color: #666;
+    border: 1px solid #ced4da;
+    border-radius: .25rem;
+    transition: border-color .1s ease-in-out, box-shadow .1s ease-in-out;
+}
+.inputDados:focus {
+    border-color: #a0d3e1;
+    box-shadow: 0 0px 4px 3px #a0d3e1;
+}

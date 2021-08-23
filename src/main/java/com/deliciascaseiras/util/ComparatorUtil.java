@@ -4,7 +4,9 @@ import com.deliciascaseiras.entity.Produto;
 
 import java.util.Comparator;
 
+//Classe para ordenar as listas de produtos
 public class ComparatorUtil {
+    //Ordenando por nome, preço e data de criação
     public static class ProdutoNameComparator implements Comparator<Produto> {
         @Override
         public int compare(Produto produto, Produto produto2) {

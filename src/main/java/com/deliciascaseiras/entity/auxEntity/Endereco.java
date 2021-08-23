@@ -124,4 +124,19 @@ public class Endereco implements Serializable {
     public void setUsuario_endereco(Usuario usuario_endereco) {
         this.usuario_endereco = usuario_endereco;
     }
+
+    @Override
+    public String toString() {
+        return "{" +
+                "id_endereco=" + id_endereco +
+                ", logradouro_endereco='" + logradouro_endereco + '\'' +
+                ", numero_endereco='" + numero_endereco + '\'' +
+                ", bairro_endereco='" + bairro_endereco + '\'' +
+                ", complemento_endereco='" + complemento_endereco + '\'' +
+                ", cep_endereco='" + cep_endereco + '\'' +
+                ", cidade_endereco='" + cidade_endereco + '\'' +
+                ", uf_endereco='" + uf_endereco + '\'' +
+                ", usuario_endereco=" + usuario_endereco +
+                '}';
+    }
 }

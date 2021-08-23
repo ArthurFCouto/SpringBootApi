@@ -2,7 +2,6 @@ package com.deliciascaseiras.entity;
 
 import com.deliciascaseiras.entity.admEntity.Role;
 import com.deliciascaseiras.entity.auxEntity.Endereco;
-import com.deliciascaseiras.util.AppUtil;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -24,7 +23,7 @@ public class Usuario implements Serializable, UserDetails {
     private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id_usuario;
 
     @Column(unique = true)
@@ -41,7 +40,7 @@ public class Usuario implements Serializable, UserDetails {
 
     private LocalDate data_usuario;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy") //Informando em qual formato será salva a nossa data
     private LocalDate dataatualizacao_usuario;
 
     @JsonIgnore
@@ -58,7 +57,7 @@ public class Usuario implements Serializable, UserDetails {
             joinColumns = @JoinColumn(
                     name = "usuario_id", referencedColumnName = "id_usuario"),
             inverseJoinColumns = @JoinColumn(
-                    name = "role_id", referencedColumnName = "nome_role")) //Primeira coluna
+                    name = "role_id", referencedColumnName = "nome_role")) //Aqui criamos uma tabela intermediária no banco de dados para salvar o relacionamento entre as duas entidades
     private List<Role> roles;
 
     public Usuario() {
@@ -86,16 +85,17 @@ public class Usuario implements Serializable, UserDetails {
 
     @Override
     public String toString() {
-        return "{" +
-                "id_usuario: " + id_usuario +
-                ", email_usuario: " + email_usuario +
-                ", nome_usuario: " + nome_usuario +
-                ", aniversario_usuario: " + aniversario_usuario +
-                ", telefone_usuario: " + telefone_usuario +
-                ", produtoList: "+AppUtil.baseURL()+"api/user/produto/usuario/"+id_usuario +
-                ", data_usuario: " + data_usuario +
-                ", dataatualizacao_usuario: " + dataatualizacao_usuario +
-                ", roles: " + roles +
+        return "Usuario{" +
+                "id_usuario=" + id_usuario + '\'' +
+                ", email_usuario='" + email_usuario + '\'' +
+                ", nome_usuario='" + nome_usuario + '\'' +
+                ", aniversario_usuario=" + aniversario_usuario + '\'' +
+                ", telefone_usuario=" + telefone_usuario + '\'' +
+                ", senha_usuario='" + senha_usuario + '\'' +
+                ", data_usuario=" + data_usuario + '\'' +
+                ", dataatualizacao_usuario=" + dataatualizacao_usuario + '\'' +
+                ", enderecoList=" + enderecoList + '\'' +
+                ", roles=" + roles +
                 '}';
     }
 

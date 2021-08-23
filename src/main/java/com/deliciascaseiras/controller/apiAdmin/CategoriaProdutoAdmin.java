@@ -14,8 +14,8 @@ import javax.validation.Valid;
 
 @CrossOrigin("*") //Deixando a API disponível para acesso em qualquer dominio
 @RequestMapping(value = "api/admin/categoriaproduto")  //Mapeamento da URL para entrar no controller
-@RestController
-@Api(value="API REST - Controle de categorias") //Passando informações sobre essa API (Breve descrição)
+@RestController //Informando que os dados trocados nas requisições serão Json
+@Api(value="API REST - Controle de categorias") //Informações sobre essa API, no caso, essa requisição (Breve descrição)
 public class CategoriaProdutoAdmin {
 
     @Autowired

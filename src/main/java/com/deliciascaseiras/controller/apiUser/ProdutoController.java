@@ -53,22 +53,43 @@ public class ProdutoController {
 
     @GetMapping(path = "buscar")
     @ApiOperation(value="Retorna uma lista que contem o nome informado")
-    public ResponseEntity<?> findByName(@RequestParam String nome) {
+    public ResponseEntity<?> findByName(@RequestParam String nome,
+                                        @Param("order") Optional<String> ordem) {
+        String ordenacao = ordem.orElse("default");
         List<Produto> produtos = produtoService.findByName(nome);
+        switch (ordenacao.toLowerCase()) {
+            case "nome" : produtos.sort(new ComparatorUtil.ProdutoNameComparator());
+            case "preco" : produtos.sort(new ComparatorUtil.ProdutoPrecoComparator());
+            case "data" : produtos.sort(new ComparatorUtil.ProdutoDataComparator());
+        }
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "categoria/{idCategoria}")
     @ApiOperation(value="Retorna uma lista que contem a categoria(id) informada")
-    public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria) {
+    public ResponseEntity<?> findByCategoria(@PathVariable("idCategoria") long idCategoria,
+                                             @Param("order") Optional<String> ordem) {
+        String ordenacao = ordem.orElse("default");
         List<Produto> produtos = produtoService.findByCategory(categoriaProdutoService.findById(idCategoria));
+        switch (ordenacao.toLowerCase()) {
+            case "nome" : produtos.sort(new ComparatorUtil.ProdutoNameComparator());
+            case "preco" : produtos.sort(new ComparatorUtil.ProdutoPrecoComparator());
+            case "data" : produtos.sort(new ComparatorUtil.ProdutoDataComparator());
+        }
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 
     @GetMapping(path = "usuario/{idUsuario}")
     @ApiOperation(value="Retorna uma lista que contem os produtos do usuario(id) informado.")
-    public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario) {
+    public ResponseEntity<?> findByUsuario(@PathVariable("idUsuario") long idUsuario,
+                                           @Param("order") Optional<String> ordem) {
+        String ordenacao = ordem.orElse("default");
         List<Produto> produtos = produtoService.findByUsuario(usuarioService.findById(idUsuario));
+        switch (ordenacao.toLowerCase()) {
+            case "nome" : produtos.sort(new ComparatorUtil.ProdutoNameComparator());
+            case "preco" : produtos.sort(new ComparatorUtil.ProdutoPrecoComparator());
+            case "data" : produtos.sort(new ComparatorUtil.ProdutoDataComparator());
+        }
         return new ResponseEntity<>(ProdutoShow.converter(produtos), HttpStatus.OK);
     }
 }

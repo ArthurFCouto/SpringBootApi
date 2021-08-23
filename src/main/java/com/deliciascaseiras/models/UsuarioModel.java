@@ -20,6 +20,7 @@ import java.util.List;
 @Getter
 @Setter
 public class UsuarioModel {
+    //Esta classe será o modelos, o objeto que o cliente deve preencher para salvar os dados no banco. Nela que devemos fazer as validações
 
     @Size(max = 45, message = "NOME - Máximo 45 caracteres")
     @NotBlank(message = "NOME - Não pode ser vazio")
@@ -57,7 +58,7 @@ public class UsuarioModel {
     }
 
     public Usuario update(Usuario usuario, UsuarioService usuarioService, ComumUtilService comumUtilService) {
-        if(!usuario.getEmail_usuario().equals(getEmail())) { //Se o usuário estiver atualizando o e-mail fazemos essa verificação, se o e-mail for o mesmo não
+        if(!usuario.getEmail_usuario().equals(getEmail())) { //Se o usuário estiver atualizando o e-mail fazemos essa verificação
             if (getEmail().toLowerCase().contains(AppUtil.emailAdmin()))
                 comumUtilService.badRequestException("Informe um e-mail válido.");
             if (usuarioService.emailIsPresent(getEmail()))

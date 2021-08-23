@@ -5,6 +5,8 @@ import com.deliciascaseiras.entity.Produto;
 import com.deliciascaseiras.entity.Usuario;
 import com.deliciascaseiras.service.ComumUtilService;
 import com.deliciascaseiras.service.UsuarioService;
+import lombok.Getter;
+import lombok.Setter;
 
 import javax.persistence.Lob;
 import javax.validation.constraints.Max;
@@ -13,6 +15,8 @@ import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 
+@Getter
+@Setter
 public class ProdutoModel{
 
     @Size(max = 25, message = "NOME - No máximo 25 caracteres")
@@ -53,45 +57,5 @@ public class ProdutoModel{
         produto.setDisponivel_produto(isDisponivel());
         produto.setDataatualizacao_produto(LocalDate.now());
         return produto;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
-
-    public String getSabor() {
-        return sabor;
-    }
-
-    public void setSabor(String sabor) {
-        this.sabor = sabor;
-    }
-
-    public float getPreco() {
-        return preco;
-    }
-
-    public void setPreco(float preco) {
-        this.preco = preco;
-    }
-
-    public boolean isDisponivel() {
-        return disponivel;
-    }
-
-    public void setDisponivel(boolean disponivel) {
-        this.disponivel = disponivel;
-    }
-
-    public String getDetalhe() {
-        return detalhe;
-    }
-
-    public void setDetalhe(String detalhe) {
-        this.detalhe = detalhe;
     }
 }

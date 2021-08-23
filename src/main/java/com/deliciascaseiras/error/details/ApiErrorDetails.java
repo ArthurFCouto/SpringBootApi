@@ -27,7 +27,7 @@ public class ApiErrorDetails {
 
     //Construtor a ser chamado para definir as variáveis
     public ApiErrorDetails(HttpStatus status, String title, String developerMessage, String error) {
-        this();
+        this(); //Chamando o construtor vazio antes de prosseguir
         this.status = status;
         this.title = title;
         this.developerMessage = developerMessage;

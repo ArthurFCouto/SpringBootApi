@@ -1,5 +1,6 @@
 package com.deliciascaseiras.service;
 
+//Interface de serviços uteis que podem ser utilizados de forma genérica
 public interface ComumUtilService {
     void verifyIfCategoriaExists(Long id);
     void verifyIfProdutoExists(Long id);

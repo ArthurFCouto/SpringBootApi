@@ -42,7 +42,7 @@ public class Produto implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     private LocalDate dataatualizacao_produto;
 
-    @ManyToOne //Relação muitos para um com usuário
+    @ManyToOne
     @JoinTable(
             name = "produto_usuario",
             joinColumns = @JoinColumn(
@@ -54,15 +54,15 @@ public class Produto implements Serializable {
     @Override
     public String toString() {
         return "{" +
-                "id_produto=" + id_produto +
+                "id_produto=" + id_produto + '\'' +
                 ", nome_produto='" + nome_produto + '\'' +
                 ", sabor_produto='" + sabor_produto + '\'' +
-                ", preco_produto=" + preco_produto +
-                ", categoria_produto=" + categoria_produto +
-                ", disponivel_produto=" + disponivel_produto +
+                ", preco_produto=" + preco_produto + '\'' +
+                ", categoria_produto=" + categoria_produto + '\'' +
+                ", disponivel_produto=" + disponivel_produto + '\'' +
                 ", detalhe_produto='" + detalhe_produto + '\'' +
-                ", data_produto=" + data_produto +
-                ", dataatualizacao_produto=" + dataatualizacao_produto +
+                ", data_produto=" + data_produto + '\'' +
+                ", dataatualizacao_produto=" + dataatualizacao_produto + '\'' +
                 '}';
     }
 

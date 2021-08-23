@@ -29,8 +29,8 @@ public class AppUtil {
         return stringList;
     }
 
-    /* //Método utilizado anteriormente
-    public static List<String> stringForList(String name) {
+    //Método utilizado anteriormente para transformar uma frase em lista de palavras com mais de duas letras
+    /*public static List<String> stringForList(String name) {
         List<String> stringList = new ArrayList<>(); //Criando a lista que será retornada
         String nome = name.replaceAll("\\s|-|;", "");
         //Com o método replaceAll eu substitui todas as ocorrencias de espaços vazios(\\s), traços, ponto e virgula por vazio ("")
@@ -75,11 +75,7 @@ public class AppUtil {
         }
     }
 
-    //Retorna a URL base da aplicação
-    public static String baseURL() {
-        return "https://deliciascaseiras.herokuapp.com/";
-    }
-
+    //Retorna o email do usuário ADMIN principal
     public static String emailAdmin() {
         return "admin@admin.com".toLowerCase();
     }

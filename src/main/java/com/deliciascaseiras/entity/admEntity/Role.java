@@ -11,17 +11,17 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.util.List;
 
-@Table(name="roles")
-@Entity
+@Table(name="roles") //Informando o nome da tabela no banco de dados
+@Entity //Informando que esta classe será uma entidade do banco de dados
 public class Role implements GrantedAuthority{
 
-    @Id //ID da Role
-    private String nome_role;
+    @Id
+    private String nome_role; //ID da Role
 
-    @NotEmpty //Nome para identificação da Role
-    private String apelido_role;
+    @NotEmpty
+    private String apelido_role; //Nome para identificação da Role
 
-    @JsonIgnore
+    @JsonIgnore //Se voltarmos um dados da entidade diretamente para o usuário, este será ignorado e não será exibido
     @ManyToMany(mappedBy = "roles")
     private List<Usuario> usuarios;
 
@@ -66,7 +66,6 @@ public class Role implements GrantedAuthority{
         this.usuarios = usuarios;
     }
 
-    @JsonIgnore
     @Override
     public String getAuthority() {
         return this.nome_role;

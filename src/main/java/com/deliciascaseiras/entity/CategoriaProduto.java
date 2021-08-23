@@ -8,14 +8,14 @@ import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
-@Table(name="categoriaproduto") //Informando qual será o nome da tabela
-@Entity //Informando que esta classe será uma entidade no banco de dados
+@Table(name="categoriaproduto")
+@Entity
 public class CategoriaProduto implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @Id //Informando quem será o ID da tabela
-    @GeneratedValue(strategy = GenerationType.AUTO) //Gerando o ID automáticamente
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private long id_categoria;
 
     @Column(unique = true) //Valor único para a coluna, como se fosse um ID
@@ -23,7 +23,7 @@ public class CategoriaProduto implements Serializable {
     @NotBlank(message = "NOME - Não pode ser vazio") //Não pode ser vazio ou nulo
     private String nome_categoria;
 
-    @JsonIgnore //Essa informação será ignorada nas solicitações
+    @JsonIgnore
     @OneToMany(mappedBy = "categoria_produto") //Relação de um para muitos com o produto
     private List<Produto> produtos_categoria;
 
@@ -34,7 +34,7 @@ public class CategoriaProduto implements Serializable {
     @Override
     public String toString() {
         return "{" +
-                "id_categoria=" + id_categoria +
+                "id_categoria=" + id_categoria + '\'' +
                 ", nome_categoria='" + nome_categoria + '\'' +
                 '}';
     }

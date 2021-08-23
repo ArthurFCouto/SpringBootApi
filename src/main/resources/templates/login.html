@@ -1,0 +1,48 @@
+<!DOCTYPE HTML>
+<html lang="pt-br" xmlns:th="http://thymeleaf.org"
+      xmlns:sec="https://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns="http://www.w3.org/1999/html">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Login - API</title>
+    <link rel="sortcut icon" th:href="@{icons/iconMain.png}" type="image/png"/>
+    <!-- Arquivo css externo -->
+    <link rel="stylesheet" type="text/css" th:href="@{css/style.css}"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+
+<body>
+<form action="/" method="post">
+    <div class="cardLogin">
+        <div class="cardLoginDados">
+            <div class="cardLoginTitle">Acesse a documentação da API</div>
+        </div>
+        <div class="cardLoginDados">
+            <a href="/" title="Login API"><img src="icons/iconMain.png" alt="API" title="API"/></a>
+        </div>
+        <div class="cardLoginDados">
+            <th:block th:include="validate"></th:block>
+        </div>
+        <div class="cardLoginDados">
+            <div class="cardLoginEntrada">
+                <label for="username">Username</label>
+                <input class="inputDados" type="text" id="username" name="username" placeholder="Digite o login"
+                       required/>
+            </div>
+        </div>
+        <div class="cardLoginDados">
+            <div class="cardLoginEntrada">
+                <label for="password">Password</label>
+                <input class="inputDados" type="password" id="password" name="password" placeholder="Digite a senha"
+                       required/>
+            </div>
+        </div>
+        <div class="cardLoginButton">
+            <input type="reset" value="Limpar"/>
+            <input type="submit" value="Login"/>
+        </div>
+    </div>
+</form>
+</body>
+</html>
